@@ -14,6 +14,7 @@ from personal_knowledge_assistant.ingestion.exceptions import (
     UnsupportedDocumentTypeError,
 )
 from personal_knowledge_assistant.ingestion.registry import LoaderRegistry
+from personal_knowledge_assistant.ingestion.text_loader import TextLoader
 
 __all__ = [
     "DocumentLoader",
@@ -25,6 +26,7 @@ __all__ = [
     "IngestionError",
     "InvalidDocumentPathError",
     "LoaderRegistry",
+    "TextLoader",
     "UnsupportedDocumentTypeError",
     "normalize_extension",
     "validate_source_path",
