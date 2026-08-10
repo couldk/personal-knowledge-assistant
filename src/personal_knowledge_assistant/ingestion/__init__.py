@@ -17,6 +17,10 @@ from personal_knowledge_assistant.ingestion.exceptions import (
     InvalidDocumentPathError,
     UnsupportedDocumentTypeError,
 )
+from personal_knowledge_assistant.ingestion.factory import (
+    create_default_ingestion_service,
+    create_default_loader_registry,
+)
 from personal_knowledge_assistant.ingestion.markdown_loader import (
     MarkdownLoader,
 )
@@ -44,6 +48,8 @@ __all__ = [
     "PdfLoader",
     "TextLoader",
     "UnsupportedDocumentTypeError",
+    "create_default_ingestion_service",
+    "create_default_loader_registry",
     "normalize_extension",
     "validate_source_path",
 ]
