@@ -1,11 +1,20 @@
 from functools import lru_cache
-from typing import Literal
+from typing import Literal, Self
 
-from pydantic import Field, SecretStr
-from pydantic_settings import BaseSettings, SettingsConfigDict
+from pydantic import (
+    Field,
+    SecretStr,
+    model_validator,
+)
+from pydantic_settings import (
+    BaseSettings,
+    SettingsConfigDict,
+)
 
 
 class Settings(BaseSettings):
+    """个人知识助手的应用配置。"""
+
     model_config = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
@@ -14,29 +23,81 @@ class Settings(BaseSettings):
         extra="ignore",
     )
 
-    # 应用环境配置
-    app_env: Literal["local", "test", "staging", "production"] = "local"
-    # 日志级别配置
-    log_level: Literal["DEBUG", "INFO", "WARNING", "ERROR"] = "INFO"
+    # 应用运行环境配置
+    app_env: Literal[
+        "local",
+        "test",
+        "staging",
+        "production",
+    ] = "local"
+
+    # 日志输出等级
+    log_level: Literal[
+        "DEBUG",
+        "INFO",
+        "WARNING",
+        "ERROR",
+    ] = "INFO"
 
     # 聊天模型配置
     chat_provider: str = "replace-me"
     chat_model: str = "replace-me"
     chat_api_key: SecretStr | None = None
 
-    # Embedding 配置
+    # Embedding模型配置
     embedding_provider: str = "replace-me"
     embedding_model: str = "replace-me"
     embedding_api_key: SecretStr | None = None
 
-    # 向量数据库配置
-    vector_store_provider: str = "pgvector"
+    # Embedding向量维度。
+    # 当前还没有确定具体Embedding模型，因此默认不写死。
+    embedding_dimension: int | None = Field(
+        default=None,
+        ge=1,
+        le=65536,
+    )
+
+    # 向量存储配置
+    vector_store_provider: Literal[
+        "memory",
+        "pgvector",
+    ] = "pgvector"
+
+    # PostgreSQL连接地址。
+    # 当前只是声明配置，尚未建立真实数据库连接。
     database_url: str = "postgresql://postgres:postgres@localhost:5432/knowledge"
 
-    # 检索数量配置
-    retrieval_top_k: int = Field(default=5, ge=1, le=20)
+    # 文档切块配置，单位为Token。
+    chunk_size: int = Field(
+        default=512,
+        ge=64,
+        le=8192,
+    )
+    chunk_overlap: int = Field(
+        default=64,
+        ge=0,
+        le=2048,
+    )
+
+    # Top-k检索数量配置
+    retrieval_top_k: int = Field(
+        default=5,
+        ge=1,
+        le=20,
+    )
+
+    @model_validator(mode="after")
+    def validate_chunking_settings(self) -> Self:
+        """确保Chunk重叠长度小于Chunk总长度。"""
+
+        if self.chunk_overlap >= self.chunk_size:
+            raise ValueError("chunk_overlap must be smaller than chunk_size.")
+
+        return self
 
 
 @lru_cache
 def get_settings() -> Settings:
+    """返回进程内缓存的应用配置。"""
+
     return Settings()

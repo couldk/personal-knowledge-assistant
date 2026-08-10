@@ -4,6 +4,8 @@ from typing import Protocol, runtime_checkable
 from personal_knowledge_assistant.domain.models import (
     ChatMessage,
     ChatResponse,
+)
+from personal_knowledge_assistant.domain.retrieval import (
     DocumentChunk,
     SearchResult,
 )
