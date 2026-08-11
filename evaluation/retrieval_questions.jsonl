@@ -1,0 +1,30 @@
+{"id":"q001","question":"Embedding 在向量检索中起什么作用？","expected_file_names":["vector-search.md"],"category":"direct","top_k":3}
+{"id":"q002","question":"余弦相似度如何衡量两个向量的接近程度？","expected_file_names":["vector-search.md"],"category":"direct","top_k":3}
+{"id":"q003","question":"为什么更换 Embedding 模型后需要重新建立索引？","expected_file_names":["vector-search.md"],"category":"direct","top_k":3}
+{"id":"q004","question":"top-k 参数控制什么？","expected_file_names":["vector-search.md"],"category":"direct","top_k":3}
+{"id":"q005","question":"HNSW 在向量数据库中有什么作用？","expected_file_names":["vector-search.md"],"category":"paraphrase","top_k":3}
+{"id":"q006","question":"向量长度不一样的数据能放进同一个索引吗？","expected_file_names":["vector-search.md"],"category":"paraphrase","top_k":3}
+{"id":"q007","question":"RAG 包含哪些主要步骤？","expected_file_names":["rag.md"],"category":"direct","top_k":3}
+{"id":"q008","question":"为什么回答必须引用检索到的 Chunk ID？","expected_file_names":["rag.md"],"category":"direct","top_k":3}
+{"id":"q009","question":"文档切块对检索效果有什么影响？","expected_file_names":["rag.md"],"category":"paraphrase","top_k":3}
+{"id":"q010","question":"找不到可靠证据时知识助手应该怎么处理？","expected_file_names":["rag.md"],"category":"paraphrase","top_k":3}
+{"id":"q011","question":"检索结果如何成为大模型的回答上下文？","expected_file_names":["rag.md"],"category":"paraphrase","top_k":3}
+{"id":"q012","question":"如何保证回答引用来自本次检索？","expected_file_names":["rag.md"],"category":"direct","top_k":3}
+{"id":"q013","question":"短期记忆和长期记忆有什么区别？","expected_file_names":["memory.md"],"category":"direct","top_k":3}
+{"id":"q014","question":"什么是语义记忆？","expected_file_names":["memory.md"],"category":"direct","top_k":3}
+{"id":"q015","question":"为什么长期记忆需要过期策略？","expected_file_names":["memory.md"],"category":"paraphrase","top_k":3}
+{"id":"q016","question":"怎样防止用户 A 读取用户 B 的记忆？","expected_file_names":["memory.md","security.md"],"category":"cross_document","top_k":3}
+{"id":"q017","question":"保存用户偏好时应该记录哪些可信度信息？","expected_file_names":["memory.md"],"category":"paraphrase","top_k":3}
+{"id":"q018","question":"情景记忆适合保存什么内容？","expected_file_names":["memory.md"],"category":"direct","top_k":3}
+{"id":"q019","question":"LangGraph 的 State 用来保存什么？","expected_file_names":["langgraph.md"],"category":"direct","top_k":3}
+{"id":"q020","question":"Node 和 Edge 在 Agent 工作流中分别表示什么？","expected_file_names":["langgraph.md"],"category":"direct","top_k":3}
+{"id":"q021","question":"Checkpoint 如何支持多轮任务恢复？","expected_file_names":["langgraph.md"],"category":"paraphrase","top_k":3}
+{"id":"q022","question":"为什么图状态必须可以序列化？","expected_file_names":["langgraph.md"],"category":"paraphrase","top_k":3}
+{"id":"q023","question":"如何避免 Agent 陷入无限反思循环？","expected_file_names":["langgraph.md"],"category":"paraphrase","top_k":3}
+{"id":"q024","question":"Checkpoint 和长期用户记忆有什么不同？","expected_file_names":["langgraph.md","memory.md"],"category":"cross_document","top_k":3}
+{"id":"q025","question":"API Key 应该保存在什么位置？","expected_file_names":["security.md"],"category":"direct","top_k":3}
+{"id":"q026","question":"为什么不能把 .env 上传到 GitHub？","expected_file_names":["security.md"],"category":"direct","top_k":3}
+{"id":"q027","question":"Prompt Injection 可能怎样影响工具调用？","expected_file_names":["security.md"],"category":"paraphrase","top_k":3}
+{"id":"q028","question":"How should retrieval logs protect private user queries?","expected_file_names":["security.md"],"category":"multilingual","top_k":3}
+{"id":"q029","question":"Why must embedding dimensions match the vector index?","expected_file_names":["vector-search.md"],"category":"multilingual","top_k":3}
+{"id":"q030","question":"How do retrieval evidence and citations work together in RAG?","expected_file_names":["rag.md","vector-search.md"],"category":"cross_document","top_k":3}
