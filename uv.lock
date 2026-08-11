@@ -1245,7 +1245,7 @@ wheels = [
 [[package]]
 name = "personal-knowledge-assistant"
 version = "0.1.0"
-source = { virtual = "." }
+source = { editable = "." }
 dependencies = [
     { name = "llama-index-core" },
     { name = "markdown-it-py" },

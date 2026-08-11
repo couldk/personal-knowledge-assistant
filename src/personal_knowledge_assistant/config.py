@@ -44,13 +44,15 @@ class Settings(BaseSettings):
     chat_model: str = "replace-me"
     chat_api_key: SecretStr | None = None
 
-    # Embedding模型配置
+    # Embedding 模型配置
     embedding_provider: str = "replace-me"
     embedding_model: str = "replace-me"
     embedding_api_key: SecretStr | None = None
 
-    # Embedding向量维度。
-    # 当前还没有确定具体Embedding模型，因此默认不写死。
+    # Embedding API 基础地址
+    embedding_base_url: str = "https://api.siliconflow.cn/v1"
+
+    # Embedding 向量维度
     embedding_dimension: int | None = Field(
         default=None,
         ge=1,

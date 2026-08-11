@@ -1,3 +1,7 @@
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [project]
 name = "personal-knowledge-assistant"
 version = "0.1.0"
@@ -9,6 +13,9 @@ dependencies = [
     "pydantic-settings>=2.14.2",
     "pypdf>=6.15.0",
 ]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/personal_knowledge_assistant"]
 
 [dependency-groups]
 dev = [
