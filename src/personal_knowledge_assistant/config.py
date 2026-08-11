@@ -59,6 +59,22 @@ class Settings(BaseSettings):
         le=65536,
     )
 
+    embedding_batch_size: int = Field(
+        default=32,
+        ge=1,
+        le=128,
+    )
+    embedding_timeout_seconds: float = Field(
+        default=30.0,
+        gt=0,
+        le=300,
+    )
+    embedding_max_retries: int = Field(
+        default=2,
+        ge=0,
+        le=10,
+    )
+
     # 向量存储配置
     vector_store_provider: Literal[
         "memory",
