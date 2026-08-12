@@ -17,9 +17,17 @@ def test_settings_have_safe_defaults(
 
     assert settings.app_env == "local"
     assert settings.retrieval_top_k == 5
+
     assert settings.chat_api_key is None
+    assert settings.chat_base_url == ("https://api.deepseek.com")
+    assert settings.chat_timeout_seconds == 60.0
+    assert settings.chat_max_retries == 2
+    assert settings.chat_max_tokens == 2048
+    assert settings.chat_temperature == 0.0
+
     assert settings.embedding_dimension is None
     assert settings.embedding_base_url == "https://api.siliconflow.cn/v1"
+
     assert settings.chunk_size == 512
     assert settings.chunk_overlap == 64
 
@@ -40,5 +48,27 @@ def test_chunk_overlap_must_be_smaller_than_chunk_size() -> None:
             {
                 "chunk_size": 128,
                 "chunk_overlap": 128,
+            }
+        )
+
+
+@pytest.mark.parametrize(
+    ("field_name", "invalid_value"),
+    [
+        ("chat_timeout_seconds", 0),
+        ("chat_max_retries", -1),
+        ("chat_max_tokens", 127),
+        ("chat_temperature", -0.1),
+        ("chat_temperature", 2.1),
+    ],
+)
+def test_chat_settings_reject_invalid_values(
+    field_name: str,
+    invalid_value: int | float,
+) -> None:
+    with pytest.raises(ValidationError):
+        Settings.model_validate(
+            {
+                field_name: invalid_value,
             }
         )

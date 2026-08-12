@@ -44,6 +44,37 @@ class Settings(BaseSettings):
     chat_model: str = "replace-me"
     chat_api_key: SecretStr | None = None
 
+    # 聊天模型 API 基础地址
+    chat_base_url: str = "https://api.deepseek.com"
+
+    # 聊天模型请求超时，单位为秒
+    chat_timeout_seconds: float = Field(
+        default=60.0,
+        gt=0,
+        le=300,
+    )
+
+    # SDK 自动重试次数
+    chat_max_retries: int = Field(
+        default=2,
+        ge=0,
+        le=10,
+    )
+
+    # 单次回答允许生成的最大 Token 数
+    chat_max_tokens: int = Field(
+        default=2048,
+        ge=128,
+        le=32768,
+    )
+
+    # 生成随机性。基于证据回答使用 0，便于稳定测试。
+    chat_temperature: float = Field(
+        default=0.0,
+        ge=0.0,
+        le=2.0,
+    )
+
     # Embedding 模型配置
     embedding_provider: str = "replace-me"
     embedding_model: str = "replace-me"
