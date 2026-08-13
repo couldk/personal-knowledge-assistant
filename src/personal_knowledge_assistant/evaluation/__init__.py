@@ -9,7 +9,9 @@ from personal_knowledge_assistant.evaluation.loader import (
     validate_expected_files,
 )
 from personal_knowledge_assistant.evaluation.metrics import (
+    AnswerMetricValues,
     RetrievalMetricValues,
+    calculate_answer_metrics,
     calculate_retrieval_metrics,
     unique_in_order,
 )
@@ -27,6 +29,7 @@ from personal_knowledge_assistant.evaluation.runner import (
 
 __all__ = [
     "AnswerEvaluationCase",
+    "AnswerMetricValues",
     "EvaluationCategory",
     "EvaluationDataError",
     "EvaluationError",
@@ -36,6 +39,7 @@ __all__ = [
     "RetrievalEvaluator",
     "RetrievalMetricValues",
     "RetrievalServiceProtocol",
+    "calculate_answer_metrics",
     "calculate_retrieval_metrics",
     "load_answer_evaluation_cases",
     "load_evaluation_cases",
