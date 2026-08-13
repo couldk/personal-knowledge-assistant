@@ -16,14 +16,28 @@ from personal_knowledge_assistant.answering.prompt_builder import (
 from personal_knowledge_assistant.answering.service import (
     AnsweringService,
 )
+from personal_knowledge_assistant.answering.trace_models import (
+    AnsweringTrace,
+    AnsweringTraceStatus,
+)
+from personal_knowledge_assistant.answering.tracing import (
+    AnsweringTracer,
+    InMemoryAnsweringTracer,
+    LoggingAnsweringTracer,
+)
 
 __all__ = [
     "AnswerCitation",
     "AnsweringError",
     "AnsweringService",
+    "AnsweringTrace",
+    "AnsweringTracer",
+    "AnsweringTraceStatus",
     "EvidenceAnswer",
     "EvidencePromptBuilder",
+    "InMemoryAnsweringTracer",
     "InvalidAnswerResponseError",
+    "LoggingAnsweringTracer",
     "UnknownCitationError",
     "create_answering_service",
 ]
