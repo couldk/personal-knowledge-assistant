@@ -270,3 +270,184 @@ class RetrievalEvaluationReport(BaseModel):
             raise ValueError("Case count must match the number of results.")
 
         return self
+
+
+class AnswerFailureReason(StrEnum):
+    """回答评测失败原因。"""
+
+    RETRIEVAL_MISS = "retrieval_miss"
+    WRONG_REFUSAL = "wrong_refusal"
+    MISSING_CITATION = "missing_citation"
+    IRRELEVANT_CITATION = "irrelevant_citation"
+    LOW_ANSWER_TERM_COVERAGE = "low_answer_term_coverage"
+    INVALID_MODEL_JSON = "invalid_model_json"
+    UNKNOWN_CITATION = "unknown_citation"
+    PROVIDER_ERROR = "provider_error"
+    HIGH_LATENCY = "high_latency"
+    UNEXPECTED_ERROR = "unexpected_error"
+
+
+class AnswerCaseResult(BaseModel):
+    """单个回答问题的评测结果。"""
+
+    case_id: str = Field(
+        pattern=r"^q[0-9]{3}$",
+    )
+    category: EvaluationCategory
+
+    succeeded: bool
+    expected_refused: bool
+    actual_refused: bool | None = None
+
+    retrieved_file_names: list[str] = Field(
+        default_factory=list,
+    )
+    retrieved_chunk_ids: list[str] = Field(
+        default_factory=list,
+    )
+    cited_file_names: list[str] = Field(
+        default_factory=list,
+    )
+    cited_chunk_ids: list[str] = Field(
+        default_factory=list,
+    )
+
+    retrieval_recall_at_3: float = Field(
+        ge=0.0,
+        le=1.0,
+    )
+    citation_precision: float = Field(
+        ge=0.0,
+        le=1.0,
+    )
+    citation_recall: float = Field(
+        ge=0.0,
+        le=1.0,
+    )
+    answer_term_coverage: float = Field(
+        ge=0.0,
+        le=1.0,
+    )
+    refusal_correct: bool
+
+    duration_ms: float = Field(
+        ge=0.0,
+        allow_inf_nan=False,
+    )
+    retrieval_duration_ms: float = Field(
+        ge=0.0,
+        allow_inf_nan=False,
+    )
+    answering_duration_ms: float = Field(
+        ge=0.0,
+        allow_inf_nan=False,
+    )
+
+    prompt_tokens: int = Field(
+        ge=0,
+    )
+    completion_tokens: int = Field(
+        ge=0,
+    )
+    total_tokens: int = Field(
+        ge=0,
+    )
+    estimated_cost: float = Field(
+        ge=0.0,
+        allow_inf_nan=False,
+    )
+
+    failure_reasons: list[AnswerFailureReason] = Field(
+        default_factory=list,
+    )
+    error_type: str | None = Field(
+        default=None,
+        min_length=1,
+    )
+
+
+class AnswerEvaluationReport(BaseModel):
+    """一次完整回答基线评测报告。"""
+
+    generated_at: AwareDatetime
+    chat_model: str = Field(
+        min_length=1,
+    )
+    embedding_model: str = Field(
+        min_length=1,
+    )
+    case_count: int = Field(
+        ge=1,
+    )
+
+    success_rate: float = Field(
+        ge=0.0,
+        le=1.0,
+    )
+    retrieval_recall_at_3: float = Field(
+        ge=0.0,
+        le=1.0,
+    )
+    citation_precision: float = Field(
+        ge=0.0,
+        le=1.0,
+    )
+    citation_recall: float = Field(
+        ge=0.0,
+        le=1.0,
+    )
+    answer_term_coverage: float = Field(
+        ge=0.0,
+        le=1.0,
+    )
+    refusal_accuracy: float = Field(
+        ge=0.0,
+        le=1.0,
+    )
+
+    average_duration_ms: float = Field(
+        ge=0.0,
+        allow_inf_nan=False,
+    )
+    total_prompt_tokens: int = Field(
+        ge=0,
+    )
+    total_completion_tokens: int = Field(
+        ge=0,
+    )
+    total_tokens: int = Field(
+        ge=0,
+    )
+    estimated_total_cost: float = Field(
+        ge=0.0,
+        allow_inf_nan=False,
+    )
+
+    cases: list[AnswerCaseResult] = Field(
+        min_length=1,
+    )
+    worst_cases: list[AnswerCaseResult] = Field(
+        default_factory=list,
+        max_length=10,
+    )
+
+    @model_validator(mode="after")
+    def validate_report_cases(
+        self,
+    ) -> Self:
+        """校验报告结果数量和最差问题范围。"""
+
+        if self.case_count != len(self.cases):
+            raise ValueError("Case count must match the number of answer results.")
+
+        case_ids = {result.case_id for result in self.cases}
+
+        worst_case_ids = [result.case_id for result in self.worst_cases]
+
+        if len(worst_case_ids) != len(set(worst_case_ids)):
+            raise ValueError("Worst cases must be unique.")
+
+        if not set(worst_case_ids) <= case_ids:
+            raise ValueError("Worst cases must belong to cases.")
+
+        return self

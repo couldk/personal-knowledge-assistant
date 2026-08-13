@@ -1,3 +1,9 @@
+from personal_knowledge_assistant.evaluation.answer_runner import (
+    AnswerCaseCompletedCallback,
+    AnsweringEvaluator,
+    AnsweringServiceProtocol,
+    AnswerRetrievalServiceProtocol,
+)
 from personal_knowledge_assistant.evaluation.exceptions import (
     EvaluationDataError,
     EvaluationError,
@@ -16,7 +22,10 @@ from personal_knowledge_assistant.evaluation.metrics import (
     unique_in_order,
 )
 from personal_knowledge_assistant.evaluation.models import (
+    AnswerCaseResult,
     AnswerEvaluationCase,
+    AnswerEvaluationReport,
+    AnswerFailureReason,
     EvaluationCategory,
     RetrievalCaseResult,
     RetrievalEvaluationCase,
@@ -28,8 +37,15 @@ from personal_knowledge_assistant.evaluation.runner import (
 )
 
 __all__ = [
+    "AnswerCaseCompletedCallback",
+    "AnswerCaseResult",
     "AnswerEvaluationCase",
+    "AnswerEvaluationReport",
+    "AnswerFailureReason",
     "AnswerMetricValues",
+    "AnswerRetrievalServiceProtocol",
+    "AnsweringEvaluator",
+    "AnsweringServiceProtocol",
     "EvaluationCategory",
     "EvaluationDataError",
     "EvaluationError",
