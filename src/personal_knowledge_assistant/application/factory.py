@@ -1,4 +1,5 @@
 from personal_knowledge_assistant.answering import (
+    AnsweringTracer,
     create_answering_service,
 )
 from personal_knowledge_assistant.application.models import (
@@ -22,6 +23,7 @@ from personal_knowledge_assistant.querying import (
     create_query_service,
 )
 from personal_knowledge_assistant.retrieval import (
+    RetrievalTracer,
     create_retrieval_service,
 )
 from personal_knowledge_assistant.vector_store import (
@@ -31,8 +33,20 @@ from personal_knowledge_assistant.vector_store import (
 
 def create_application_services(
     settings: Settings,
+    *,
+    retrieval_tracer: RetrievalTracer | None = None,
+    answering_tracer: AnsweringTracer | None = None,
 ) -> ApplicationServices:
-    """创建并连接应用服务。"""
+    """创建并连接应用服务。
+
+    Args:
+        settings: 应用配置。
+        retrieval_tracer: 可选的检索 Trace 记录器。
+        answering_tracer: 可选的回答 Trace 记录器。
+
+    Returns:
+        已完成依赖装配的应用服务集合。
+    """
 
     chat_provider = create_chat_provider(settings)
     embedding_provider = create_embedding_provider(settings)
@@ -53,11 +67,13 @@ def create_application_services(
         settings=settings,
         embedding_provider=embedding_provider,
         vector_store=vector_store,
+        tracer=retrieval_tracer,
     )
 
     answering_service = create_answering_service(
         settings=settings,
         chat_provider=chat_provider,
+        tracer=answering_tracer,
     )
 
     query_service = create_query_service(

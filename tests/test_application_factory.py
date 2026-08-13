@@ -4,6 +4,10 @@ from datetime import UTC, datetime
 import pytest
 
 import personal_knowledge_assistant.application.factory as application_factory
+from personal_knowledge_assistant.answering import (
+    AnsweringTraceStatus,
+    InMemoryAnsweringTracer,
+)
 from personal_knowledge_assistant.config import Settings
 from personal_knowledge_assistant.domain import (
     ChatMessage,
@@ -20,6 +24,10 @@ from personal_knowledge_assistant.providers.base import (
     ChatProvider,
     EmbeddingProvider,
     VectorStoreProvider,
+)
+from personal_knowledge_assistant.retrieval import (
+    InMemoryRetrievalTracer,
+    RetrievalTraceStatus,
 )
 from personal_knowledge_assistant.vector_store import (
     InMemoryVectorStore,
@@ -45,7 +53,11 @@ class SharedChatProvider:
         return ChatResponse(
             content=('{"answer":"测试回答","citations":[],"confidence":0.0,"refused":true}'),
             model="test-chat-model",
-            usage={},
+            usage={
+                "prompt_tokens": 10,
+                "completion_tokens": 5,
+                "total_tokens": 15,
+            },
         )
 
 
@@ -80,10 +92,10 @@ def _make_document() -> LoadedDocument:
     text = "Vector retrieval uses shared services."
 
     return LoadedDocument(
-        document_id="file:///documents/shared.txt",
+        document_id=("file:///documents/shared.txt"),
         content_hash="a" * 64,
         metadata=DocumentMetadata(
-            source_path="D:/documents/shared.txt",
+            source_path=("D:/documents/shared.txt"),
             file_name="shared.txt",
             document_type=DocumentType.TEXT,
             file_size=len(text.encode("utf-8")),
@@ -106,7 +118,7 @@ def _make_document() -> LoadedDocument:
 
 
 @pytest.mark.asyncio
-async def test_application_services_share_provider_and_store(
+async def test_application_services_share_dependencies_and_tracers(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
     chat_provider = SharedChatProvider()
@@ -114,6 +126,9 @@ async def test_application_services_share_provider_and_store(
     vector_store = InMemoryVectorStore(
         dimension=3,
     )
+
+    retrieval_tracer = InMemoryRetrievalTracer()
+    answering_tracer = InMemoryAnsweringTracer()
 
     def fake_create_chat_provider(
         settings: Settings,
@@ -156,8 +171,8 @@ async def test_application_services_share_provider_and_store(
             "chat_api_key": "test-chat-key",
             "chat_base_url": ("https://api.deepseek.com"),
             "embedding_provider": "siliconflow",
-            "embedding_model": "test-embedding-model",
-            "embedding_api_key": "test-embedding-key",
+            "embedding_model": ("test-embedding-model"),
+            "embedding_api_key": ("test-embedding-key"),
             "embedding_dimension": 3,
             "vector_store_provider": "memory",
             "chunk_size": 64,
@@ -165,15 +180,15 @@ async def test_application_services_share_provider_and_store(
         }
     )
 
-    services = application_factory.create_application_services(settings)
+    services = application_factory.create_application_services(
+        settings,
+        retrieval_tracer=retrieval_tracer,
+        answering_tracer=answering_tracer,
+    )
 
     assert services.chat_provider is chat_provider
     assert services.embedding_provider is embedding_provider
     assert services.vector_store is vector_store
-    assert services.indexing_service is not None
-    assert services.retrieval_service is not None
-    assert services.answering_service is not None
-    assert services.query_service is not None
 
     document = _make_document()
 
@@ -203,3 +218,29 @@ async def test_application_services_share_provider_and_store(
 
     assert chat_provider.json_mode is True
     assert len(chat_provider.messages) == 2
+
+    # 第一次直接调用 retrieval_service，
+    # 第二次由 query_service 内部调用。
+    assert len(retrieval_tracer.traces) == 2
+
+    first_retrieval_trace = retrieval_tracer.traces[0]
+    second_retrieval_trace = retrieval_tracer.traces[1]
+
+    assert first_retrieval_trace.status is RetrievalTraceStatus.SUCCEEDED
+    assert second_retrieval_trace.status is RetrievalTraceStatus.SUCCEEDED
+
+    assert first_retrieval_trace.result_count == 1
+    assert second_retrieval_trace.result_count == 1
+
+    assert len(answering_tracer.traces) == 1
+
+    answering_trace = answering_tracer.traces[0]
+
+    assert answering_trace.status is AnsweringTraceStatus.SUCCEEDED
+    assert answering_trace.model == "test-chat-model"
+    assert answering_trace.refused is True
+    assert answering_trace.citation_ids == []
+    assert answering_trace.prompt_tokens == 10
+    assert answering_trace.completion_tokens == 5
+    assert answering_trace.total_tokens == 15
+    assert answering_trace.error_type is None
