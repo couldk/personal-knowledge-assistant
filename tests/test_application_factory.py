@@ -189,6 +189,7 @@ async def test_application_services_share_dependencies_and_tracers(
     assert services.chat_provider is chat_provider
     assert services.embedding_provider is embedding_provider
     assert services.vector_store is vector_store
+    assert services.agent_service is not None
 
     document = _make_document()
 

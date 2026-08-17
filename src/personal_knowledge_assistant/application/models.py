@@ -1,5 +1,8 @@
 from dataclasses import dataclass
 
+from personal_knowledge_assistant.agent import (
+    KnowledgeAgentService,
+)
 from personal_knowledge_assistant.answering import (
     AnsweringService,
 )
@@ -26,7 +29,9 @@ class ApplicationServices:
     chat_provider: ChatProvider
     embedding_provider: EmbeddingProvider
     vector_store: VectorStoreProvider
+
     indexing_service: DocumentIndexingService
     retrieval_service: RetrievalService
     answering_service: AnsweringService
     query_service: KnowledgeQueryService
+    agent_service: KnowledgeAgentService

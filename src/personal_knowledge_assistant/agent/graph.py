@@ -1,3 +1,4 @@
+from langgraph.checkpoint.base import BaseCheckpointSaver
 from langgraph.graph import END, START, StateGraph
 from langgraph.graph.state import CompiledStateGraph
 
@@ -34,15 +35,16 @@ def _select_route(
 def create_knowledge_agent_graph(
     *,
     nodes: KnowledgeAgentNodes,
+    checkpointer: BaseCheckpointSaver[str] | None = None,
 ) -> KnowledgeAgentGraph:
     """创建并编译个人知识助手 LangGraph。
 
-    节点负责业务逻辑，当前函数只负责：
+    Args:
+        nodes: 已完成依赖注入的 Agent 节点集合。
+        checkpointer: 可选的 LangGraph 状态保存器。
 
-    1. 注册节点；
-    2. 配置普通边；
-    3. 配置条件路由；
-    4. 编译可执行图。
+    Returns:
+        已编译的知识 Agent 状态图。
     """
 
     builder = StateGraph[
@@ -134,5 +136,6 @@ def create_knowledge_agent_graph(
     )
 
     return builder.compile(
+        checkpointer=checkpointer,
         name="personal-knowledge-agent",
     )

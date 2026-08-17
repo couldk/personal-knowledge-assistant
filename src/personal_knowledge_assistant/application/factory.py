@@ -1,3 +1,10 @@
+from langgraph.checkpoint.base import (
+    BaseCheckpointSaver,
+)
+
+from personal_knowledge_assistant.agent import (
+    create_knowledge_agent_service,
+)
 from personal_knowledge_assistant.answering import (
     AnsweringTracer,
     create_answering_service,
@@ -36,20 +43,14 @@ def create_application_services(
     *,
     retrieval_tracer: RetrievalTracer | None = None,
     answering_tracer: AnsweringTracer | None = None,
+    agent_checkpointer: (BaseCheckpointSaver[str] | None) = None,
 ) -> ApplicationServices:
-    """创建并连接应用服务。
-
-    Args:
-        settings: 应用配置。
-        retrieval_tracer: 可选的检索 Trace 记录器。
-        answering_tracer: 可选的回答 Trace 记录器。
-
-    Returns:
-        已完成依赖装配的应用服务集合。
-    """
+    """创建并连接应用服务。"""
 
     chat_provider = create_chat_provider(settings)
-    embedding_provider = create_embedding_provider(settings)
+    embedding_provider = create_embedding_provider(
+        settings,
+    )
     vector_store = create_vector_store(settings)
 
     indexing_service = DocumentIndexingService(
@@ -81,6 +82,13 @@ def create_application_services(
         answer_generator=answering_service,
     )
 
+    agent_service = create_knowledge_agent_service(
+        retriever=retrieval_service,
+        answer_generator=answering_service,
+        chat_provider=chat_provider,
+        checkpointer=agent_checkpointer,
+    )
+
     return ApplicationServices(
         chat_provider=chat_provider,
         embedding_provider=embedding_provider,
@@ -89,4 +97,5 @@ def create_application_services(
         retrieval_service=retrieval_service,
         answering_service=answering_service,
         query_service=query_service,
+        agent_service=agent_service,
     )
