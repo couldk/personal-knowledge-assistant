@@ -131,3 +131,35 @@ LangGraph内部使用`AgentState`保存完整执行状态，但应用层不能�
 answered：正常生成有引用回答
 refused：程序正常运行，但证据不足
 failed：检索、改写或回答过程发生异常
+
+## 9. LangGraph节点实现
+
+任务四已经将现有RAG服务包装为可独立测试的LangGraph节点。
+
+### 9.1 节点依赖
+
+`KnowledgeAgentNodes`通过构造函数接收：
+
+- `Retriever`：执行知识库检索；
+- `AnswerGenerator`：依据检索证据生成结构化回答；
+- `ChatProvider`：在证据不足时改写检索问题。
+
+节点不自行创建Provider或Service，便于：
+
+- 单元测试；
+- 依赖替换；
+- Provider切换；
+- 工厂统一装配；
+- 避免重复创建网络客户端。
+
+### 9.2 retrieve节点
+
+执行流程：
+
+```text
+读取retrieval_query
+→ 构造RetrievalQuery
+→ 调用Retriever
+→ retrieval_attempts + 1
+→ 保存retrieval_results
+→ route=grade_evidence
