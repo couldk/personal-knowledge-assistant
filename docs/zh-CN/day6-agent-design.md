@@ -113,3 +113,21 @@ Agent 必须在以下任意条件下终止：
 - 真实 API 调用。
 
 这些能力将在第六天后续任务中逐步实现。
+
+## 8. 对外结果边界
+
+LangGraph内部使用`AgentState`保存完整执行状态，但应用层不能直接把状态返回给调用方。
+
+公开结果使用：
+
+- `AgentOutcome`：区分回答、正常拒答和执行失败；
+- `AgentEvidence`：只返回引用元数据，不返回Chunk正文；
+- `KnowledgeAgentResult`：返回最终答案、检索次数、最终查询和证据摘要；
+- `create_agent_result`：负责把内部状态转换为公开结果。
+
+结果状态：
+
+```text
+answered：正常生成有引用回答
+refused：程序正常运行，但证据不足
+failed：检索、改写或回答过程发生异常
