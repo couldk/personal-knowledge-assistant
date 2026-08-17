@@ -4,6 +4,9 @@ from personal_knowledge_assistant.agent.models import (
     KnowledgeAgentResult,
     create_agent_result,
 )
+from personal_knowledge_assistant.agent.nodes import (
+    KnowledgeAgentNodes,
+)
 from personal_knowledge_assistant.agent.state import (
     AgentRoute,
     AgentState,
@@ -16,6 +19,7 @@ __all__ = [
     "AgentOutcome",
     "AgentRoute",
     "AgentState",
+    "KnowledgeAgentNodes",
     "KnowledgeAgentRequest",
     "KnowledgeAgentResult",
     "create_agent_result",
