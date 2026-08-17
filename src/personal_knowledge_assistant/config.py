@@ -135,6 +135,21 @@ class Settings(BaseSettings):
         le=20,
     )
 
+    # Agent最大检索次数，包括第一次原始问题检索。
+    agent_max_retrieval_attempts: int = Field(
+        default=2,
+        ge=1,
+        le=5,
+    )
+
+    # 判断检索证据是否足够相关的最低相似度。
+    agent_min_relevance_score: float = Field(
+        default=0.35,
+        ge=-1.0,
+        le=1.0,
+        allow_inf_nan=False,
+    )
+
     @model_validator(mode="after")
     def validate_chunking_settings(self) -> Self:
         """确保Chunk重叠长度小于Chunk总长度。"""
