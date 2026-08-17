@@ -854,3 +854,100 @@ Service 内部负责：
 - 真实 DeepSeek 与硅基流动端到端验证；
 - 第六天完整质量门禁；
 - GitHub 上传与阶段总结。
+
+---
+
+## 19. LangSmith可观测性
+
+任务七为知识Agent增加LangSmith Trace配置。
+
+每次Agent执行使用统一运行名称：
+
+```text
+knowledge-agent-run
+```
+
+Trace标签：
+
+- `personal-knowledge-assistant`；
+- `langgraph`；
+- `day6`。
+
+Trace元数据：
+
+- `component=knowledge-agent`；
+- `thread_id_hash=<SHA-256>`。
+
+不会主动把原始会话ID、API Key、数据库密码或原始异常内容写入Trace元数据。
+
+LangGraph在启用以下环境变量后自动上传Trace：
+
+```text
+LANGSMITH_TRACING=true
+LANGSMITH_API_KEY=<secret>
+LANGSMITH_PROJECT=personal-knowledge-assistant-day6
+```
+
+## 20. 真实端到端验证
+
+真实验证流程：
+
+```text
+加载.env
+→ 创建应用服务
+→ 使用硅基流动生成Embedding
+→ 索引验证文档
+→ 执行KnowledgeAgentService
+→ 使用DeepSeek生成证据回答
+→ 验证公开结果
+→ 验证Checkpointer历史
+→ 上传LangSmith Trace
+```
+
+真实验证脚本：
+
+```text
+scripts/verify_knowledge_agent.py
+```
+
+验证过程中不输出任何API Key。
+
+## 21. 第六天最终结果
+
+第六天已经完成：
+
+1. Agent请求与共享状态；
+2. 路由和循环终止设计；
+3. Agent公开结果模型；
+4. 六个可测试业务节点；
+5. LangGraph状态图编排；
+6. 查询改写与有限重试；
+7. 安全拒答和异常处理；
+8. Checkpointer短期会话记忆；
+9. thread_id会话隔离；
+10. KnowledgeAgentService；
+11. 应用工厂统一装配；
+12. LangSmith可观测性；
+13. 真实模型端到端验证。
+
+当前短期记忆使用`InMemorySaver`，应用重启后不会保留。
+
+生产环境仍需补充：
+
+- PostgreSQL持久化Checkpointer；
+- 用户身份认证和会话授权；
+- Trace采样与隐私脱敏策略；
+- API层限流、超时和熔断；
+- 多实例并发一致性。
+
+## 22. 当前实现进度
+
+| 任务 | 内容 | 状态 |
+|---|---|---|
+| 任务一 | Agent请求、状态与路由设计 | 已完成 |
+| 任务二 | LangGraph、LangSmith依赖与配置 | 已完成 |
+| 任务三 | Agent公开结果模型 | 已完成 |
+| 任务四 | Agent业务节点 | 已完成 |
+| 任务五 | LangGraph图编排 | 已完成 |
+| 任务六 | Agent Service、Checkpointer与会话隔离 | 已完成 |
+| 任务七 | LangSmith、端到端验证与收尾 | 已完成 |

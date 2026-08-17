@@ -16,6 +16,7 @@ from personal_knowledge_assistant.agent.nodes import (
 )
 from personal_knowledge_assistant.agent.service import (
     KnowledgeAgentService,
+    create_agent_run_config,
 )
 from personal_knowledge_assistant.agent.state import (
     AgentRoute,
@@ -35,6 +36,7 @@ __all__ = [
     "KnowledgeAgentResult",
     "KnowledgeAgentService",
     "create_agent_result",
+    "create_agent_run_config",
     "create_initial_agent_state",
     "create_knowledge_agent_graph",
     "create_knowledge_agent_service",

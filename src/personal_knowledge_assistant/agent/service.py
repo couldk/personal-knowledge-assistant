@@ -1,3 +1,4 @@
+from hashlib import sha256
 from typing import cast
 
 from langchain_core.runnables import RunnableConfig
@@ -16,17 +17,43 @@ from personal_knowledge_assistant.agent.state import (
 )
 
 
-class KnowledgeAgentService:
-    """个人知识 Agent 应用服务。
+def create_agent_run_config(
+    thread_id: str,
+) -> RunnableConfig:
+    """创建 LangGraph 执行和 LangSmith Trace 配置。
 
-    负责：
+    thread_id 用于 Checkpointer 会话隔离。
 
-    1. 校验 thread_id；
-    2. 创建初始 Agent 状态；
-    3. 调用已经编译的 LangGraph；
-    4. 将内部状态转换为公开结果；
-    5. 读取指定会话的问题历史。
+    Trace 元数据只保存 thread_id 的哈希值，
+    不把调用方提供的原始会话标识放进 metadata。
     """
+
+    normalized_thread_id = thread_id.strip()
+
+    if not normalized_thread_id:
+        raise ValueError("thread_id cannot be empty.")
+
+    thread_id_hash = sha256(normalized_thread_id.encode("utf-8")).hexdigest()
+
+    return RunnableConfig(
+        configurable={
+            "thread_id": normalized_thread_id,
+        },
+        run_name="knowledge-agent-run",
+        tags=[
+            "personal-knowledge-assistant",
+            "langgraph",
+            "day6",
+        ],
+        metadata={
+            "component": "knowledge-agent",
+            "thread_id_hash": thread_id_hash,
+        },
+    )
+
+
+class KnowledgeAgentService:
+    """个人知识 Agent 应用服务。"""
 
     def __init__(
         self,
@@ -43,7 +70,7 @@ class KnowledgeAgentService:
     ) -> KnowledgeAgentResult:
         """执行一次知识 Agent 请求。"""
 
-        config = self._create_thread_config(
+        config = create_agent_run_config(
             thread_id,
         )
 
@@ -70,7 +97,7 @@ class KnowledgeAgentService:
     ) -> list[str]:
         """读取指定会话已经保存的问题历史。"""
 
-        config = self._create_thread_config(
+        config = create_agent_run_config(
             thread_id,
         )
 
@@ -91,21 +118,4 @@ class KnowledgeAgentService:
                 "question_history",
                 [],
             )
-        )
-
-    @staticmethod
-    def _create_thread_config(
-        thread_id: str,
-    ) -> RunnableConfig:
-        """创建 LangGraph 会话配置。"""
-
-        normalized_thread_id = thread_id.strip()
-
-        if not normalized_thread_id:
-            raise ValueError("thread_id cannot be empty.")
-
-        return RunnableConfig(
-            configurable={
-                "thread_id": normalized_thread_id,
-            }
         )
