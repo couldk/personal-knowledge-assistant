@@ -1,3 +1,7 @@
+from personal_knowledge_assistant.agent.graph import (
+    KnowledgeAgentGraph,
+    create_knowledge_agent_graph,
+)
 from personal_knowledge_assistant.agent.models import (
     AgentEvidence,
     AgentOutcome,
@@ -19,9 +23,11 @@ __all__ = [
     "AgentOutcome",
     "AgentRoute",
     "AgentState",
+    "KnowledgeAgentGraph",
     "KnowledgeAgentNodes",
     "KnowledgeAgentRequest",
     "KnowledgeAgentResult",
     "create_agent_result",
     "create_initial_agent_state",
+    "create_knowledge_agent_graph",
 ]
