@@ -788,7 +788,7 @@ grade_evidence
 | 任务四 | 检索、评分、改写、回答、拒答及错误节点 | 已完成 |
 | 任务五 | 构建并编译 LangGraph | 已完成 |
 | 任务六 | Agent Service、Checkpointer 与会话隔离 | 已完成 |
-| 任务七 | LangSmith Trace、端到端验证与收尾 | 待完成 |
+| 任务七 | LangSmith Trace、端到端验证与收尾 | 已完成 |
 
 ---
 
