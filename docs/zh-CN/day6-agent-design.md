@@ -695,21 +695,90 @@ max_retrieval_attempts=2
 
 ### 13.4 当前测试结果
 
-任务四完成后的质量检查结果：
+任务五完成后的质量检查结果：
 
 ```text
 Ruff format: passed
 Ruff check: passed
 mypy: passed
 Agent node tests: 11 passed
-Full test suite: 350 passed
+Agent graph tests: 4 passed
+Full test suite: 354 passed
 ```
 
 测试数量会随着后续任务继续增加。
 
 ---
 
-## 14. 当前实现进度
+## 14. LangGraph 图编排实现
+
+任务五已经在 `agent/graph.py` 中把六个独立节点连接为可执行状态图。
+
+### 14.1 图入口
+
+每次执行从 `retrieve` 节点开始：
+
+```text
+START → retrieve
+```
+
+### 14.2 条件路由
+
+图通过读取节点写入的 `route` 字段选择下一节点：
+
+```text
+retrieve
+  ├─ grade_evidence
+  └─ handle_error
+
+grade_evidence
+  ├─ answer
+  ├─ rewrite_query
+  ├─ refuse
+  └─ handle_error
+
+rewrite_query
+  ├─ retrieve
+  └─ handle_error
+
+answer
+  ├─ END
+  └─ handle_error
+```
+
+### 14.3 终止节点
+
+以下节点完成后进入 LangGraph 的 `END`：
+
+- `answer` 成功；
+- `refuse` 完成安全拒答；
+- `handle_error` 完成安全异常响应。
+
+### 14.4 查询改写循环
+
+证据不足但仍有剩余次数时执行：
+
+```text
+grade_evidence
+→ rewrite_query
+→ retrieve
+→ grade_evidence
+```
+
+循环次数由 `max_retrieval_attempts` 控制，不允许无限执行。
+
+### 14.5 图编排测试
+
+任务五验证了四条端到端图路径：
+
+1. 第一次检索证据充分并成功回答；
+2. 第一次证据不足，改写问题后成功回答；
+3. 达到最大检索次数后安全拒答；
+4. 检索异常进入统一安全错误处理。
+
+---
+
+## 15. 当前实现进度
 
 | 任务 | 内容 | 状态 |
 |---|---|---|
@@ -717,70 +786,71 @@ Full test suite: 350 passed
 | 任务二 | LangGraph、LangSmith 依赖与 Agent 配置 | 已完成 |
 | 任务三 | Agent 公开结果模型 | 已完成 |
 | 任务四 | 检索、评分、改写、回答、拒答及错误节点 | 已完成 |
-| 任务五 | 构建并编译 LangGraph | 待完成 |
+| 任务五 | 构建并编译 LangGraph | 已完成 |
 | 任务六 | Agent Service、Checkpointer 与会话隔离 | 待完成 |
 | 任务七 | LangSmith Trace、端到端验证与收尾 | 待完成 |
 
 ---
 
-## 15. 任务五边界
+## 16. 任务六设计边界
 
-任务五将负责：
+任务六负责：
 
-1. 创建 `StateGraph`；
-2. 注册六个 Agent 节点；
-3. 配置 `START`；
-4. 配置普通边和条件边；
-5. 配置查询改写循环；
-6. 配置 `END`；
-7. 编译可执行 Graph；
-8. 测试成功回答路径；
-9. 测试查询改写路径；
-10. 测试证据不足拒答路径；
-11. 测试异常处理路径。
+1. 允许 Graph 在编译时接收 Checkpointer；
+2. 默认使用 LangGraph `InMemorySaver`；
+3. 实现 `KnowledgeAgentService`；
+4. 使用 `thread_id` 隔离不同会话；
+5. 将 Graph 内部状态转换为 `KnowledgeAgentResult`；
+6. 提供问题历史读取能力；
+7. 将 Agent Service 接入应用工厂；
+8. 测试同会话状态累积与不同会话隔离。
 
-任务五暂不负责：
+任务六不负责：
 
-- Checkpointer；
-- `thread_id`；
-- 多轮会话记忆；
+- 跨进程或服务重启后的持久记忆；
+- PostgreSQL Checkpointer；
+- 用户身份认证；
+- 会话授权；
 - LangSmith 在线 Trace；
-- 应用层 Agent Service；
-- 命令行或 Web API。
+- Web API 或命令行界面。
 
-这些内容将在后续任务中实现。
+`InMemorySaver` 只适用于本地开发、学习和单进程测试。生产环境必须替换为持久化 Checkpointer。
 
 ---
 
-## 16. 后续规划
+## 17. 任务六目标调用方式
 
-任务五完成后的目标调用方式为：
+任务六完成后，调用方不再直接操作 Graph：
 
 ```python
-initial_state = create_initial_agent_state(
+result = await agent_service.run(
     request,
-)
-
-final_state = await graph.ainvoke(
-    initial_state,
-)
-
-result = create_agent_result(
-    final_state,
+    thread_id="user-13547-session-1",
 )
 ```
 
-后续加入 Checkpointer 后，调用方式会扩展为：
+Service 内部负责：
 
-```python
-final_state = await graph.ainvoke(
-    initial_state,
-    config={
-        "configurable": {
-            "thread_id": thread_id,
-        }
-    },
-)
+```text
+校验 thread_id
+→ 创建初始 AgentState
+→ 使用 thread_id 调用 graph.ainvoke
+→ 从 Checkpointer 保存或恢复状态
+→ 转换为 KnowledgeAgentResult
+→ 返回安全公开结果
 ```
 
-`thread_id` 用于隔离不同会话，避免多个用户共享同一份 Agent 状态。
+同一个 `thread_id` 的问题历史会继续累积；不同 `thread_id` 的状态必须完全隔离。
+
+---
+
+## 18. 任务七规划
+
+任务七将在 Agent 可以稳定执行和隔离会话后，补充：
+
+- LangSmith Trace；
+- 节点执行可观测性；
+- Token、耗时和错误记录；
+- 真实 DeepSeek 与硅基流动端到端验证；
+- 第六天完整质量门禁；
+- GitHub 上传与阶段总结。
