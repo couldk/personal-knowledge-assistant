@@ -1,0 +1,30 @@
+{"id":"q001","question":"Embedding 在向量检索中起什么作用？","expected_file_names":["vector-search.md"],"expected_answer_terms":["固定长度","向量","语义"],"expected_refused":false,"category":"direct","top_k":3}
+{"id":"q002","question":"余弦相似度如何衡量向量之间的接近程度？","expected_file_names":["vector-search.md"],"expected_answer_terms":["方向","语义","接近"],"expected_refused":false,"category":"direct","top_k":3}
+{"id":"q003","question":"为什么更换 Embedding 模型或维度后要重建索引？","expected_file_names":["vector-search.md"],"expected_answer_terms":["模型","维度","重建索引"],"expected_refused":false,"category":"direct","top_k":3}
+{"id":"q004","question":"增大 top-k 会对检索结果产生什么影响？","expected_file_names":["vector-search.md"],"expected_answer_terms":["召回率","上下文","噪声"],"expected_refused":false,"category":"direct","top_k":3}
+{"id":"q005","question":"RAG 的基础处理流程包括哪些步骤？","expected_file_names":["rag.md"],"expected_answer_terms":["加载文档","Embedding","检索证据","模型上下文"],"expected_refused":false,"category":"direct","top_k":3}
+{"id":"q006","question":"知识助手如何确保回答中的引用真实存在？","expected_file_names":["rag.md"],"expected_answer_terms":["Chunk ID","SearchResult","后置校验"],"expected_refused":false,"category":"direct","top_k":3}
+{"id":"q007","question":"短期记忆和长期记忆的主要区别是什么？","expected_file_names":["memory.md"],"expected_answer_terms":["当前对话","跨会话","长期记忆"],"expected_refused":false,"category":"direct","top_k":3}
+{"id":"q008","question":"语义记忆适合保存什么内容？","expected_file_names":["memory.md"],"expected_answer_terms":["经过验证","事实","语义记忆"],"expected_refused":false,"category":"direct","top_k":3}
+{"id":"q009","question":"LangGraph 中 State、Node 和 Edge 分别承担什么职责？","expected_file_names":["langgraph.md"],"expected_answer_terms":["State","Node","Edge"],"expected_refused":false,"category":"direct","top_k":3}
+{"id":"q010","question":"API Key 应该保存在哪里，哪些位置不能保存？","expected_file_names":["security.md"],"expected_answer_terms":["环境变量","密钥管理系统","源代码"],"expected_refused":false,"category":"direct","top_k":3}
+{"id":"q011","question":"HNSW 为什么能够加快大规模向量搜索？","expected_file_names":["vector-search.md"],"expected_answer_terms":["近似最近邻","多层图","延迟"],"expected_refused":false,"category":"paraphrase","top_k":3}
+{"id":"q012","question":"知识库没有可靠资料时，助手应该继续推测吗？","expected_file_names":["rag.md"],"expected_answer_terms":["证据不足","拒答","信息缺失"],"expected_refused":false,"category":"paraphrase","top_k":3}
+{"id":"q013","question":"为什么不能永久、无限制地保存长期记忆？","expected_file_names":["memory.md"],"expected_answer_terms":["来源","置信度","过期策略"],"expected_refused":false,"category":"paraphrase","top_k":3}
+{"id":"q014","question":"为什么数据库连接和 SDK 客户端不能放进 LangGraph State？","expected_file_names":["langgraph.md"],"expected_answer_terms":["序列化","外部资源","依赖注入"],"expected_refused":false,"category":"paraphrase","top_k":3}
+{"id":"q015","question":"怎样防止 Agent 在反思和修复过程中无限循环？","expected_file_names":["langgraph.md"],"expected_answer_terms":["最大次数","一次修复","无限循环"],"expected_refused":false,"category":"paraphrase","top_k":3}
+{"id":"q016","question":"面对 Prompt Injection，工具调用层需要采取哪些保护措施？","expected_file_names":["security.md"],"expected_answer_terms":["参数校验","权限边界","人工审批"],"expected_refused":false,"category":"paraphrase","top_k":3}
+{"id":"q017","question":"多用户知识助手应如何同时隔离记忆和检索数据？","expected_file_names":["memory.md","security.md"],"expected_answer_terms":["tenant_id","user_id","隔离"],"expected_refused":false,"category":"cross_document","top_k":3}
+{"id":"q018","question":"Checkpoint 和长期记忆有什么本质区别？","expected_file_names":["langgraph.md","memory.md"],"expected_answer_terms":["执行状态","恢复","跨线程","长期记忆"],"expected_refused":false,"category":"cross_document","top_k":3}
+{"id":"q019","question":"为了在不泄露私人内容的情况下追踪 RAG，应记录哪些信息？","expected_file_names":["rag.md","security.md"],"expected_answer_terms":["查询哈希","Chunk ID","模型名","耗时"],"expected_refused":false,"category":"cross_document","top_k":3}
+{"id":"q020","question":"为什么评测 RAG 时需要同时固定切块方式、模型和问题集？","expected_file_names":["rag.md","vector-search.md"],"expected_answer_terms":["切块","模型","固定问题集","Recall@3"],"expected_refused":false,"category":"cross_document","top_k":3}
+{"id":"q021","question":"系统如何同时防止文档指令注入和模型编造引用？","expected_file_names":["security.md","rag.md"],"expected_answer_terms":["不可信数据","Chunk ID","后置校验"],"expected_refused":false,"category":"cross_document","top_k":3}
+{"id":"q022","question":"How should retrieval logs protect private user questions?","expected_file_names":["security.md"],"expected_answer_terms":["查询哈希","Chunk ID","文档正文"],"expected_refused":false,"category":"multilingual","top_k":3}
+{"id":"q023","question":"Why must query and document vectors use matching embedding dimensions?","expected_file_names":["vector-search.md"],"expected_answer_terms":["相同维度","Embedding 模型","向量索引"],"expected_refused":false,"category":"multilingual","top_k":3}
+{"id":"q024","question":"How does a LangGraph checkpoint help resume an interrupted task?","expected_file_names":["langgraph.md"],"expected_answer_terms":["线程","执行状态","恢复"],"expected_refused":false,"category":"multilingual","top_k":3}
+{"id":"q025","question":"How can a RAG system ensure that generated citations are trustworthy?","expected_file_names":["rag.md"],"expected_answer_terms":["检索证据","Chunk ID","后置校验"],"expected_refused":false,"category":"multilingual","top_k":3}
+{"id":"q026","question":"火星上目前有多少名永久居民？","expected_file_names":[],"expected_answer_terms":[],"expected_refused":true,"category":"out_of_scope","top_k":3}
+{"id":"q027","question":"明天北京的最高气温是多少？","expected_file_names":[],"expected_answer_terms":[],"expected_refused":true,"category":"out_of_scope","top_k":3}
+{"id":"q028","question":"请告诉我某家公司的实时股票价格。","expected_file_names":[],"expected_answer_terms":[],"expected_refused":true,"category":"out_of_scope","top_k":3}
+{"id":"q029","question":"根据我的症状直接判断我患了什么疾病。","expected_file_names":[],"expected_answer_terms":[],"expected_refused":true,"category":"out_of_scope","top_k":3}
+{"id":"q030","question":"请提供管理员账号的真实密码。","expected_file_names":[],"expected_answer_terms":[],"expected_refused":true,"category":"out_of_scope","top_k":3}

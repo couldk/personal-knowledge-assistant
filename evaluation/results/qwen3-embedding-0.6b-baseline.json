@@ -1,0 +1,827 @@
+{
+  "generated_at": "2026-08-11T09:02:54.200603Z",
+  "model": "Qwen/Qwen3-Embedding-0.6B",
+  "dimension": 1024,
+  "chunk_size": 512,
+  "chunk_overlap": 64,
+  "case_count": 30,
+  "hit_at_1": 0.9333333333333333,
+  "recall_at_3": 1.0,
+  "mean_reciprocal_rank": 0.9666666666666667,
+  "average_duration_ms": 121.46892666739102,
+  "cases": [
+    {
+      "case_id": "q001",
+      "category": "direct",
+      "expected_file_names": [
+        "vector-search.md"
+      ],
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "scores": [
+        0.7083193549108776,
+        0.5172139954219112,
+        0.31906289836894175
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 122.55759991239756
+    },
+    {
+      "case_id": "q002",
+      "category": "direct",
+      "expected_file_names": [
+        "vector-search.md"
+      ],
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "scores": [
+        0.6309626816317587,
+        0.3199111195569752,
+        0.3037082252209564
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 117.59469995740801
+    },
+    {
+      "case_id": "q003",
+      "category": "direct",
+      "expected_file_names": [
+        "vector-search.md"
+      ],
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "scores": [
+        0.6349535218241028,
+        0.4585116331337367,
+        0.3432330786527965
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 121.76999996881932
+    },
+    {
+      "case_id": "q004",
+      "category": "direct",
+      "expected_file_names": [
+        "vector-search.md"
+      ],
+      "retrieved_file_names": [
+        "vector-search.md",
+        "security.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "scores": [
+        0.41383134215620937,
+        0.36166644690812905,
+        0.35671890499260184
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 122.28590005543083
+    },
+    {
+      "case_id": "q005",
+      "category": "paraphrase",
+      "expected_file_names": [
+        "vector-search.md"
+      ],
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "scores": [
+        0.59973801587785,
+        0.3915738450482078,
+        0.3513739312106742
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 119.81720000039786
+    },
+    {
+      "case_id": "q006",
+      "category": "paraphrase",
+      "expected_file_names": [
+        "vector-search.md"
+      ],
+      "retrieved_file_names": [
+        "vector-search.md",
+        "memory.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "scores": [
+        0.542425047624175,
+        0.3683630365489681,
+        0.3326439751255219
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 118.40790009591728
+    },
+    {
+      "case_id": "q007",
+      "category": "direct",
+      "expected_file_names": [
+        "rag.md"
+      ],
+      "retrieved_file_names": [
+        "rag.md",
+        "langgraph.md",
+        "vector-search.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "scores": [
+        0.7364442148856987,
+        0.3889636114033903,
+        0.38432551603751314
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 121.75759999081492
+    },
+    {
+      "case_id": "q008",
+      "category": "direct",
+      "expected_file_names": [
+        "rag.md"
+      ],
+      "retrieved_file_names": [
+        "rag.md",
+        "vector-search.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "scores": [
+        0.6245058949161295,
+        0.4578369424782669,
+        0.39181803112251234
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 118.94000007305294
+    },
+    {
+      "case_id": "q009",
+      "category": "paraphrase",
+      "expected_file_names": [
+        "rag.md"
+      ],
+      "retrieved_file_names": [
+        "rag.md",
+        "vector-search.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "scores": [
+        0.5698300268144788,
+        0.49908147857744084,
+        0.38264633785175933
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 113.79269999451935
+    },
+    {
+      "case_id": "q010",
+      "category": "paraphrase",
+      "expected_file_names": [
+        "rag.md"
+      ],
+      "retrieved_file_names": [
+        "rag.md",
+        "vector-search.md",
+        "security.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "scores": [
+        0.5498436115145041,
+        0.3251932888868477,
+        0.3152090917372797
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 143.8849000260234
+    },
+    {
+      "case_id": "q011",
+      "category": "paraphrase",
+      "expected_file_names": [
+        "rag.md"
+      ],
+      "retrieved_file_names": [
+        "rag.md",
+        "vector-search.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "scores": [
+        0.5963469086960232,
+        0.5011687715868586,
+        0.3988165924944266
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 116.46930000279099
+    },
+    {
+      "case_id": "q012",
+      "category": "direct",
+      "expected_file_names": [
+        "rag.md"
+      ],
+      "retrieved_file_names": [
+        "rag.md",
+        "vector-search.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "scores": [
+        0.5722830297308342,
+        0.5076049144909807,
+        0.36486048371152585
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 118.36379999294877
+    },
+    {
+      "case_id": "q013",
+      "category": "direct",
+      "expected_file_names": [
+        "memory.md"
+      ],
+      "retrieved_file_names": [
+        "memory.md",
+        "vector-search.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "scores": [
+        0.6901525358338575,
+        0.3326424098949696,
+        0.31488288195769354
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 130.46650006435812
+    },
+    {
+      "case_id": "q014",
+      "category": "direct",
+      "expected_file_names": [
+        "memory.md"
+      ],
+      "retrieved_file_names": [
+        "memory.md",
+        "vector-search.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "scores": [
+        0.6053898721006098,
+        0.3939186741611005,
+        0.3668822330918405
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 124.3722999934107
+    },
+    {
+      "case_id": "q015",
+      "category": "paraphrase",
+      "expected_file_names": [
+        "memory.md"
+      ],
+      "retrieved_file_names": [
+        "memory.md",
+        "langgraph.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "scores": [
+        0.6750449525304968,
+        0.33701278695164794,
+        0.3161303486346696
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 122.92250001337379
+    },
+    {
+      "case_id": "q016",
+      "category": "cross_document",
+      "expected_file_names": [
+        "memory.md",
+        "security.md"
+      ],
+      "retrieved_file_names": [
+        "memory.md",
+        "security.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "scores": [
+        0.6163137926557222,
+        0.4399858014228666,
+        0.3590894073217754
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 127.4569999659434
+    },
+    {
+      "case_id": "q017",
+      "category": "paraphrase",
+      "expected_file_names": [
+        "memory.md"
+      ],
+      "retrieved_file_names": [
+        "memory.md",
+        "security.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "scores": [
+        0.5205114840146342,
+        0.4784254422935156,
+        0.35991497471219314
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 117.75740003213286
+    },
+    {
+      "case_id": "q018",
+      "category": "direct",
+      "expected_file_names": [
+        "memory.md"
+      ],
+      "retrieved_file_names": [
+        "memory.md",
+        "langgraph.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "scores": [
+        0.5763570186395046,
+        0.2971637000578382,
+        0.2888396753701444
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 121.57299998216331
+    },
+    {
+      "case_id": "q019",
+      "category": "direct",
+      "expected_file_names": [
+        "langgraph.md"
+      ],
+      "retrieved_file_names": [
+        "langgraph.md",
+        "memory.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "scores": [
+        0.8332860414737219,
+        0.5146397830050242,
+        0.37954580600183935
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 116.76030000671744
+    },
+    {
+      "case_id": "q020",
+      "category": "direct",
+      "expected_file_names": [
+        "langgraph.md"
+      ],
+      "retrieved_file_names": [
+        "langgraph.md",
+        "security.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "scores": [
+        0.6408204331113275,
+        0.43429717702870385,
+        0.38594464101538123
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 120.88249996304512
+    },
+    {
+      "case_id": "q021",
+      "category": "paraphrase",
+      "expected_file_names": [
+        "langgraph.md"
+      ],
+      "retrieved_file_names": [
+        "memory.md",
+        "langgraph.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "scores": [
+        0.5301755962147574,
+        0.47145567864431814,
+        0.42810993905512157
+      ],
+      "first_relevant_rank": 2,
+      "hit_at_1": 0.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 0.5,
+      "duration_ms": 124.63610002305359
+    },
+    {
+      "case_id": "q022",
+      "category": "paraphrase",
+      "expected_file_names": [
+        "langgraph.md"
+      ],
+      "retrieved_file_names": [
+        "langgraph.md",
+        "memory.md",
+        "security.md"
+      ],
+      "retrieved_chunk_ids": [
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "scores": [
+        0.5915503193196512,
+        0.4496494862495674,
+        0.3042328084269878
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 119.89680002443492
+    },
+    {
+      "case_id": "q023",
+      "category": "paraphrase",
+      "expected_file_names": [
+        "langgraph.md"
+      ],
+      "retrieved_file_names": [
+        "security.md",
+        "langgraph.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "scores": [
+        0.5199806580386789,
+        0.43321194783581546,
+        0.4283951678282161
+      ],
+      "first_relevant_rank": 2,
+      "hit_at_1": 0.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 0.5,
+      "duration_ms": 109.51829992700368
+    },
+    {
+      "case_id": "q024",
+      "category": "cross_document",
+      "expected_file_names": [
+        "langgraph.md",
+        "memory.md"
+      ],
+      "retrieved_file_names": [
+        "memory.md",
+        "langgraph.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "scores": [
+        0.7805691797610184,
+        0.4460878766544354,
+        0.3756449041773887
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 106.94510000757873
+    },
+    {
+      "case_id": "q025",
+      "category": "direct",
+      "expected_file_names": [
+        "security.md"
+      ],
+      "retrieved_file_names": [
+        "security.md",
+        "memory.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "scores": [
+        0.6520059292837331,
+        0.4368191793253652,
+        0.30590434572505526
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 127.93820002116263
+    },
+    {
+      "case_id": "q026",
+      "category": "direct",
+      "expected_file_names": [
+        "security.md"
+      ],
+      "retrieved_file_names": [
+        "security.md",
+        "langgraph.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "scores": [
+        0.47605303656279135,
+        0.28502064831749224,
+        0.2841805651299122
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 125.39120006840676
+    },
+    {
+      "case_id": "q027",
+      "category": "paraphrase",
+      "expected_file_names": [
+        "security.md"
+      ],
+      "retrieved_file_names": [
+        "security.md",
+        "rag.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "scores": [
+        0.5128380186026111,
+        0.4102850065610533,
+        0.36632763372493893
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 125.27809990569949
+    },
+    {
+      "case_id": "q028",
+      "category": "multilingual",
+      "expected_file_names": [
+        "security.md"
+      ],
+      "retrieved_file_names": [
+        "security.md",
+        "memory.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "scores": [
+        0.5211441002844167,
+        0.5126094736309115,
+        0.5004223526803574
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 120.91459997463971
+    },
+    {
+      "case_id": "q029",
+      "category": "multilingual",
+      "expected_file_names": [
+        "vector-search.md"
+      ],
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "scores": [
+        0.6049923453530304,
+        0.43918384073101585,
+        0.3383962386441049
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 123.40789998415858
+    },
+    {
+      "case_id": "q030",
+      "category": "cross_document",
+      "expected_file_names": [
+        "rag.md",
+        "vector-search.md"
+      ],
+      "retrieved_file_names": [
+        "rag.md",
+        "vector-search.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "scores": [
+        0.7747129026953234,
+        0.5132113403392491,
+        0.4655045377919113
+      ],
+      "first_relevant_rank": 1,
+      "hit_at_1": 1.0,
+      "recall_at_3": 1.0,
+      "reciprocal_rank": 1.0,
+      "duration_ms": 122.30839999392629
+    }
+  ]
+}

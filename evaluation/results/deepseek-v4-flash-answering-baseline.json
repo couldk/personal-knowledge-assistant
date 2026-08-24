@@ -1,0 +1,1531 @@
+{
+  "generated_at": "2026-08-14T02:33:34.078751Z",
+  "chat_model": "deepseek-v4-flash",
+  "embedding_model": "Qwen/Qwen3-Embedding-0.6B",
+  "case_count": 30,
+  "success_rate": 1.0,
+  "retrieval_recall_at_3": 1.0,
+  "citation_precision": 0.9666666666666667,
+  "citation_recall": 0.9833333333333333,
+  "answer_term_coverage": 0.9333333333333333,
+  "refusal_accuracy": 1.0,
+  "average_duration_ms": 3603.7607966655437,
+  "total_prompt_tokens": 38395,
+  "total_completion_tokens": 9287,
+  "total_tokens": 47682,
+  "estimated_total_cost": 0.0,
+  "cases": [
+    {
+      "case_id": "q001",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "cited_file_names": [
+        "vector-search.md"
+      ],
+      "cited_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 4065.271900006337,
+      "retrieval_duration_ms": 107.5054000102682,
+      "answering_duration_ms": 3957.3556000104873,
+      "prompt_tokens": 1284,
+      "completion_tokens": 290,
+      "total_tokens": 1574,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q002",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "cited_file_names": [
+        "vector-search.md"
+      ],
+      "cited_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2705.042300003697,
+      "retrieval_duration_ms": 138.3959000086179,
+      "answering_duration_ms": 2566.2615000037476,
+      "prompt_tokens": 1271,
+      "completion_tokens": 171,
+      "total_tokens": 1442,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q003",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "cited_file_names": [
+        "vector-search.md"
+      ],
+      "cited_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 3239.6494999993593,
+      "retrieval_duration_ms": 141.57849999901373,
+      "answering_duration_ms": 3097.412200004328,
+      "prompt_tokens": 1274,
+      "completion_tokens": 212,
+      "total_tokens": 1486,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q004",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "cited_file_names": [
+        "vector-search.md"
+      ],
+      "cited_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2793.0977000069106,
+      "retrieval_duration_ms": 106.63889998977538,
+      "answering_duration_ms": 2685.7362000009743,
+      "prompt_tokens": 1272,
+      "completion_tokens": 216,
+      "total_tokens": 1488,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q005",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "rag.md",
+        "vector-search.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "cited_file_names": [
+        "rag.md"
+      ],
+      "cited_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2746.2491000042064,
+      "retrieval_duration_ms": 124.39350000931881,
+      "answering_duration_ms": 2621.061900004861,
+      "prompt_tokens": 1283,
+      "completion_tokens": 214,
+      "total_tokens": 1497,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q006",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "rag.md",
+        "vector-search.md",
+        "security.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "cited_file_names": [
+        "rag.md"
+      ],
+      "cited_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2712.853199991514,
+      "retrieval_duration_ms": 104.44110000389628,
+      "answering_duration_ms": 2607.7578000113135,
+      "prompt_tokens": 1294,
+      "completion_tokens": 215,
+      "total_tokens": 1509,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q007",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "memory.md",
+        "vector-search.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "cited_file_names": [
+        "memory.md"
+      ],
+      "cited_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2351.7713000037475,
+      "retrieval_duration_ms": 113.03069999848958,
+      "answering_duration_ms": 2237.8203999978723,
+      "prompt_tokens": 1263,
+      "completion_tokens": 168,
+      "total_tokens": 1431,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q008",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "memory.md",
+        "vector-search.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "cited_file_names": [
+        "memory.md"
+      ],
+      "cited_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2101.8056999891996,
+      "retrieval_duration_ms": 117.14269999356475,
+      "answering_duration_ms": 1983.8247000006959,
+      "prompt_tokens": 1261,
+      "completion_tokens": 163,
+      "total_tokens": 1424,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q009",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "langgraph.md",
+        "memory.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "cited_file_names": [
+        "langgraph.md"
+      ],
+      "cited_chunk_ids": [
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2793.067099992186,
+      "retrieval_duration_ms": 114.0235000057146,
+      "answering_duration_ms": 2677.9210999957286,
+      "prompt_tokens": 1275,
+      "completion_tokens": 244,
+      "total_tokens": 1519,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q010",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "security.md",
+        "memory.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "cited_file_names": [
+        "security.md",
+        "langgraph.md"
+      ],
+      "cited_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 0.5,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 3582.01199999894,
+      "retrieval_duration_ms": 99.6539999905508,
+      "answering_duration_ms": 3481.6316999931587,
+      "prompt_tokens": 1276,
+      "completion_tokens": 386,
+      "total_tokens": 1662,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "irrelevant_citation"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q011",
+      "category": "paraphrase",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "cited_file_names": [
+        "vector-search.md"
+      ],
+      "cited_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 3286.053500007256,
+      "retrieval_duration_ms": 121.83820000791457,
+      "answering_duration_ms": 3162.966100004269,
+      "prompt_tokens": 1284,
+      "completion_tokens": 290,
+      "total_tokens": 1574,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q012",
+      "category": "paraphrase",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "rag.md",
+        "security.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "cited_file_names": [
+        "rag.md"
+      ],
+      "cited_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 0.6666666666666666,
+      "refusal_correct": true,
+      "duration_ms": 2649.325799997314,
+      "retrieval_duration_ms": 112.58240000461228,
+      "answering_duration_ms": 2535.423199995421,
+      "prompt_tokens": 1284,
+      "completion_tokens": 213,
+      "total_tokens": 1497,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "low_answer_term_coverage"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q013",
+      "category": "paraphrase",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "memory.md",
+        "langgraph.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "cited_file_names": [
+        "memory.md"
+      ],
+      "cited_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 6203.567499993369,
+      "retrieval_duration_ms": 109.88000000361353,
+      "answering_duration_ms": 6092.265200000838,
+      "prompt_tokens": 1270,
+      "completion_tokens": 594,
+      "total_tokens": 1864,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "high_latency"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q014",
+      "category": "paraphrase",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "langgraph.md",
+        "memory.md",
+        "security.md"
+      ],
+      "retrieved_chunk_ids": [
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "cited_file_names": [
+        "langgraph.md"
+      ],
+      "cited_chunk_ids": [
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 3420.1170000014827,
+      "retrieval_duration_ms": 237.31799999950454,
+      "answering_duration_ms": 3181.445599999279,
+      "prompt_tokens": 1277,
+      "completion_tokens": 317,
+      "total_tokens": 1594,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q015",
+      "category": "paraphrase",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "security.md",
+        "langgraph.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "cited_file_names": [
+        "langgraph.md"
+      ],
+      "cited_chunk_ids": [
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2518.4105999942403,
+      "retrieval_duration_ms": 116.78689999098424,
+      "answering_duration_ms": 2399.608799998532,
+      "prompt_tokens": 1294,
+      "completion_tokens": 207,
+      "total_tokens": 1501,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q016",
+      "category": "paraphrase",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "security.md",
+        "rag.md",
+        "vector-search.md"
+      ],
+      "retrieved_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "cited_file_names": [
+        "security.md"
+      ],
+      "cited_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 5111.209900001995,
+      "retrieval_duration_ms": 112.61070000182372,
+      "answering_duration_ms": 4997.857499998645,
+      "prompt_tokens": 1298,
+      "completion_tokens": 531,
+      "total_tokens": 1829,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "high_latency"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q017",
+      "category": "cross_document",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "memory.md",
+        "rag.md",
+        "security.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "cited_file_names": [
+        "memory.md",
+        "security.md"
+      ],
+      "cited_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 4665.4070999938995,
+      "retrieval_duration_ms": 133.6414999968838,
+      "answering_duration_ms": 4530.859699996654,
+      "prompt_tokens": 1284,
+      "completion_tokens": 446,
+      "total_tokens": 1730,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q018",
+      "category": "cross_document",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "memory.md",
+        "langgraph.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "cited_file_names": [
+        "memory.md",
+        "langgraph.md"
+      ],
+      "cited_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 4002.35869998869,
+      "retrieval_duration_ms": 137.11960001091938,
+      "answering_duration_ms": 3861.606300008134,
+      "prompt_tokens": 1269,
+      "completion_tokens": 368,
+      "total_tokens": 1637,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q019",
+      "category": "cross_document",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "rag.md",
+        "security.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "cited_file_names": [
+        "security.md"
+      ],
+      "cited_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 0.5,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 6895.443300003535,
+      "retrieval_duration_ms": 112.75350001233164,
+      "answering_duration_ms": 6780.941399993026,
+      "prompt_tokens": 1286,
+      "completion_tokens": 701,
+      "total_tokens": 1987,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "missing_citation",
+        "high_latency"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q020",
+      "category": "cross_document",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "rag.md",
+        "langgraph.md",
+        "vector-search.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "cited_file_names": [
+        "rag.md",
+        "vector-search.md"
+      ],
+      "cited_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 5992.579099998693,
+      "retrieval_duration_ms": 218.25389999139588,
+      "answering_duration_ms": 5769.247799995355,
+      "prompt_tokens": 1289,
+      "completion_tokens": 581,
+      "total_tokens": 1870,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "high_latency"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q021",
+      "category": "cross_document",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "security.md",
+        "rag.md",
+        "vector-search.md"
+      ],
+      "retrieved_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "cited_file_names": [
+        "security.md",
+        "rag.md"
+      ],
+      "cited_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 6771.994900002028,
+      "retrieval_duration_ms": 314.77969999832567,
+      "answering_duration_ms": 6455.080799991265,
+      "prompt_tokens": 1297,
+      "completion_tokens": 770,
+      "total_tokens": 2067,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "high_latency"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q022",
+      "category": "multilingual",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "security.md",
+        "memory.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "cited_file_names": [
+        "security.md"
+      ],
+      "cited_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 3145.6867000088096,
+      "retrieval_duration_ms": 227.14850000920705,
+      "answering_duration_ms": 2917.624199995771,
+      "prompt_tokens": 1278,
+      "completion_tokens": 218,
+      "total_tokens": 1496,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q023",
+      "category": "multilingual",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "cited_file_names": [
+        "vector-search.md"
+      ],
+      "cited_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2388.2117999892216,
+      "retrieval_duration_ms": 120.94600001000799,
+      "answering_duration_ms": 2264.1337999957614,
+      "prompt_tokens": 1271,
+      "completion_tokens": 174,
+      "total_tokens": 1445,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q024",
+      "category": "multilingual",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "langgraph.md",
+        "memory.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "cited_file_names": [
+        "langgraph.md",
+        "memory.md"
+      ],
+      "cited_chunk_ids": [
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 0.5,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 0.0,
+      "refusal_correct": true,
+      "duration_ms": 3158.483100007288,
+      "retrieval_duration_ms": 122.68760000006296,
+      "answering_duration_ms": 3032.715299996198,
+      "prompt_tokens": 1270,
+      "completion_tokens": 300,
+      "total_tokens": 1570,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "irrelevant_citation",
+        "low_answer_term_coverage"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q025",
+      "category": "multilingual",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "rag.md",
+        "vector-search.md",
+        "security.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "cited_file_names": [
+        "rag.md"
+      ],
+      "cited_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 0.3333333333333333,
+      "refusal_correct": true,
+      "duration_ms": 5660.911799990572,
+      "retrieval_duration_ms": 147.5718000001507,
+      "answering_duration_ms": 5509.371399995871,
+      "prompt_tokens": 1297,
+      "completion_tokens": 510,
+      "total_tokens": 1807,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "low_answer_term_coverage",
+        "high_latency"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q026",
+      "category": "out_of_scope",
+      "succeeded": true,
+      "expected_refused": true,
+      "actual_refused": true,
+      "retrieved_file_names": [
+        "memory.md",
+        "langgraph.md",
+        "security.md"
+      ],
+      "retrieved_chunk_ids": [
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "cited_file_names": [],
+      "cited_chunk_ids": [],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 4043.196500002523,
+      "retrieval_duration_ms": 232.3471999989124,
+      "answering_duration_ms": 3807.0966999948723,
+      "prompt_tokens": 1272,
+      "completion_tokens": 359,
+      "total_tokens": 1631,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q027",
+      "category": "out_of_scope",
+      "succeeded": true,
+      "expected_refused": true,
+      "actual_refused": true,
+      "retrieved_file_names": [
+        "rag.md",
+        "vector-search.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "cited_file_names": [],
+      "cited_chunk_ids": [],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2211.2496999907307,
+      "retrieval_duration_ms": 113.77809999976307,
+      "answering_duration_ms": 2094.773899996653,
+      "prompt_tokens": 1267,
+      "completion_tokens": 102,
+      "total_tokens": 1369,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q028",
+      "category": "out_of_scope",
+      "succeeded": true,
+      "expected_refused": true,
+      "actual_refused": true,
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "security.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "cited_file_names": [],
+      "cited_chunk_ids": [],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2513.9611000049626,
+      "retrieval_duration_ms": 124.01129999489058,
+      "answering_duration_ms": 2382.7805999899283,
+      "prompt_tokens": 1294,
+      "completion_tokens": 139,
+      "total_tokens": 1433,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q029",
+      "category": "out_of_scope",
+      "succeeded": true,
+      "expected_refused": true,
+      "actual_refused": true,
+      "retrieved_file_names": [
+        "rag.md",
+        "langgraph.md",
+        "vector-search.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "cited_file_names": [],
+      "cited_chunk_ids": [],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2102.3966999928234,
+      "retrieval_duration_ms": 115.67169999761973,
+      "answering_duration_ms": 1979.517499989015,
+      "prompt_tokens": 1283,
+      "completion_tokens": 85,
+      "total_tokens": 1368,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q030",
+      "category": "out_of_scope",
+      "succeeded": true,
+      "expected_refused": true,
+      "actual_refused": true,
+      "retrieved_file_names": [
+        "security.md",
+        "memory.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "cited_file_names": [],
+      "cited_chunk_ids": [],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2281.439300000784,
+      "retrieval_duration_ms": 122.37560001085512,
+      "answering_duration_ms": 2151.6038999980083,
+      "prompt_tokens": 1278,
+      "completion_tokens": 103,
+      "total_tokens": 1381,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    }
+  ],
+  "worst_cases": [
+    {
+      "case_id": "q024",
+      "category": "multilingual",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "langgraph.md",
+        "memory.md",
+        "rag.md"
+      ],
+      "retrieved_chunk_ids": [
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "cited_file_names": [
+        "langgraph.md",
+        "memory.md"
+      ],
+      "cited_chunk_ids": [
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 0.5,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 0.0,
+      "refusal_correct": true,
+      "duration_ms": 3158.483100007288,
+      "retrieval_duration_ms": 122.68760000006296,
+      "answering_duration_ms": 3032.715299996198,
+      "prompt_tokens": 1270,
+      "completion_tokens": 300,
+      "total_tokens": 1570,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "irrelevant_citation",
+        "low_answer_term_coverage"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q025",
+      "category": "multilingual",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "rag.md",
+        "vector-search.md",
+        "security.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "cited_file_names": [
+        "rag.md"
+      ],
+      "cited_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 0.3333333333333333,
+      "refusal_correct": true,
+      "duration_ms": 5660.911799990572,
+      "retrieval_duration_ms": 147.5718000001507,
+      "answering_duration_ms": 5509.371399995871,
+      "prompt_tokens": 1297,
+      "completion_tokens": 510,
+      "total_tokens": 1807,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "low_answer_term_coverage",
+        "high_latency"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q010",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "security.md",
+        "memory.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "cited_file_names": [
+        "security.md",
+        "langgraph.md"
+      ],
+      "cited_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 0.5,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 3582.01199999894,
+      "retrieval_duration_ms": 99.6539999905508,
+      "answering_duration_ms": 3481.6316999931587,
+      "prompt_tokens": 1276,
+      "completion_tokens": 386,
+      "total_tokens": 1662,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "irrelevant_citation"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q019",
+      "category": "cross_document",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "rag.md",
+        "security.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "cited_file_names": [
+        "security.md"
+      ],
+      "cited_chunk_ids": [
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 0.5,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 6895.443300003535,
+      "retrieval_duration_ms": 112.75350001233164,
+      "answering_duration_ms": 6780.941399993026,
+      "prompt_tokens": 1286,
+      "completion_tokens": 701,
+      "total_tokens": 1987,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "missing_citation",
+        "high_latency"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q012",
+      "category": "paraphrase",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "rag.md",
+        "security.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "2573d3ccbdf61a1b099a94bcee608f2c02e90fc75f721afc23d3d6ff9dc9ba48",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "cited_file_names": [
+        "rag.md"
+      ],
+      "cited_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 0.6666666666666666,
+      "refusal_correct": true,
+      "duration_ms": 2649.325799997314,
+      "retrieval_duration_ms": 112.58240000461228,
+      "answering_duration_ms": 2535.423199995421,
+      "prompt_tokens": 1284,
+      "completion_tokens": 213,
+      "total_tokens": 1497,
+      "estimated_cost": 0.0,
+      "failure_reasons": [
+        "low_answer_term_coverage"
+      ],
+      "error_type": null
+    },
+    {
+      "case_id": "q001",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "cited_file_names": [
+        "vector-search.md"
+      ],
+      "cited_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 4065.271900006337,
+      "retrieval_duration_ms": 107.5054000102682,
+      "answering_duration_ms": 3957.3556000104873,
+      "prompt_tokens": 1284,
+      "completion_tokens": 290,
+      "total_tokens": 1574,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q002",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "cited_file_names": [
+        "vector-search.md"
+      ],
+      "cited_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2705.042300003697,
+      "retrieval_duration_ms": 138.3959000086179,
+      "answering_duration_ms": 2566.2615000037476,
+      "prompt_tokens": 1271,
+      "completion_tokens": 171,
+      "total_tokens": 1442,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q003",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "cited_file_names": [
+        "vector-search.md"
+      ],
+      "cited_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 3239.6494999993593,
+      "retrieval_duration_ms": 141.57849999901373,
+      "answering_duration_ms": 3097.412200004328,
+      "prompt_tokens": 1274,
+      "completion_tokens": 212,
+      "total_tokens": 1486,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q004",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "vector-search.md",
+        "rag.md",
+        "memory.md"
+      ],
+      "retrieved_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "c6cb644b573db9dfa80ed448771b1ff5e5d67095347e3a741310c828b204eff6"
+      ],
+      "cited_file_names": [
+        "vector-search.md"
+      ],
+      "cited_chunk_ids": [
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2793.0977000069106,
+      "retrieval_duration_ms": 106.63889998977538,
+      "answering_duration_ms": 2685.7362000009743,
+      "prompt_tokens": 1272,
+      "completion_tokens": 216,
+      "total_tokens": 1488,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    },
+    {
+      "case_id": "q005",
+      "category": "direct",
+      "succeeded": true,
+      "expected_refused": false,
+      "actual_refused": false,
+      "retrieved_file_names": [
+        "rag.md",
+        "vector-search.md",
+        "langgraph.md"
+      ],
+      "retrieved_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410",
+        "6e62cf07236b9c387783fc2db32e5a670b508fc98579e5136ac1722117cfcbd9",
+        "077c750c262a030d0f2d99443246fe332cd158d65aadcb28a5bee5d2d86d77bb"
+      ],
+      "cited_file_names": [
+        "rag.md"
+      ],
+      "cited_chunk_ids": [
+        "30482932d9bfd9721f260bd5c77f94508c730ee3811ab3d74d1dc06f4987c410"
+      ],
+      "retrieval_recall_at_3": 1.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "answer_term_coverage": 1.0,
+      "refusal_correct": true,
+      "duration_ms": 2746.2491000042064,
+      "retrieval_duration_ms": 124.39350000931881,
+      "answering_duration_ms": 2621.061900004861,
+      "prompt_tokens": 1283,
+      "completion_tokens": 214,
+      "total_tokens": 1497,
+      "estimated_cost": 0.0,
+      "failure_reasons": [],
+      "error_type": null
+    }
+  ]
+}

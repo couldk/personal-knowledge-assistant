@@ -4,6 +4,8 @@ from typing import Protocol, runtime_checkable
 from personal_knowledge_assistant.domain.models import (
     ChatMessage,
     ChatResponse,
+)
+from personal_knowledge_assistant.domain.retrieval import (
     DocumentChunk,
     SearchResult,
 )
@@ -16,8 +18,18 @@ class ChatProvider(Protocol):
     async def complete(
         self,
         messages: Sequence[ChatMessage],
+        *,
+        json_mode: bool = False,
     ) -> ChatResponse:
-        """根据消息生成回答。"""
+        """根据消息生成回答。
+
+        Args:
+            messages: 发送给聊天模型的消息列表。
+            json_mode: 是否要求模型返回 JSON 格式内容。
+
+        Returns:
+            聊天模型生成的响应。
+        """
         ...
 
 
