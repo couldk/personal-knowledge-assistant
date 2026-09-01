@@ -170,7 +170,10 @@ class DocumentImportService:
         if suffix not in self._SUPPORTED_EXTENSIONS:
             raise UnsupportedUploadTypeError(f"Unsupported upload type: {suffix or '<none>'}")
 
-        if path.stem.casefold() in self._WINDOWS_RESERVED_NAMES:
+        # Windows 会把 CON.txt 和 CON.backup.txt 等名称都视为保留设备名。
+        reserved_name_candidate = path.name.split(".", maxsplit=1)[0].casefold()
+
+        if reserved_name_candidate in self._WINDOWS_RESERVED_NAMES:
             raise InvalidUploadFileNameError("Upload file name is reserved by Windows.")
 
         return normalized

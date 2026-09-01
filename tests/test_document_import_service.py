@@ -185,6 +185,19 @@ async def test_upload_rejects_unsafe_name(
 
 
 @pytest.mark.asyncio
+async def test_upload_rejects_windows_reserved_name(
+    tmp_path: Path,
+) -> None:
+    service, _ = create_service(tmp_path)
+
+    with pytest.raises(InvalidUploadFileNameError):
+        await service.import_upload(
+            file_name="CON.backup.txt",
+            content=b"secret",
+        )
+
+
+@pytest.mark.asyncio
 async def test_upload_rejects_unsupported_type(
     tmp_path: Path,
 ) -> None:

@@ -13,12 +13,17 @@ from personal_knowledge_assistant.api import (
 )
 from personal_knowledge_assistant.application import (
     DocumentImportOutcome,
+    InvalidUploadFileNameError,
+    UnsupportedUploadTypeError,
 )
 from personal_knowledge_assistant.domain import (
     ImportStatus,
 )
 from personal_knowledge_assistant.indexing import (
     IndexingStatus,
+)
+from personal_knowledge_assistant.ingestion import (
+    IngestionError,
 )
 
 
@@ -325,3 +330,80 @@ def test_document_import_rejects_large_file() -> None:
         )
 
     assert response.status_code == 413
+
+
+def test_document_import_rejects_invalid_file_name() -> None:
+    import_service = FakeDocumentImportService(
+        error=InvalidUploadFileNameError("unsafe"),
+    )
+    app = create_api_app(
+        agent_service=FakeAgentService(),
+        document_import_service=import_service,
+    )
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/v1/documents/import",
+            files={"file": ("unsafe.txt", b"text", "text/plain")},
+        )
+
+    assert response.status_code == 400
+    assert response.json() == {"detail": "Upload file name is invalid."}
+
+
+def test_document_import_rejects_unsupported_type() -> None:
+    import_service = FakeDocumentImportService(
+        error=UnsupportedUploadTypeError("unsupported"),
+    )
+    app = create_api_app(
+        agent_service=FakeAgentService(),
+        document_import_service=import_service,
+    )
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/v1/documents/import",
+            files={"file": ("program.exe", b"binary", "application/octet-stream")},
+        )
+
+    assert response.status_code == 415
+    assert response.json() == {"detail": "Only TXT, Markdown and PDF are supported."}
+
+
+def test_document_import_maps_parse_failure() -> None:
+    import_service = FakeDocumentImportService(
+        error=IngestionError("cannot parse"),
+    )
+    app = create_api_app(
+        agent_service=FakeAgentService(),
+        document_import_service=import_service,
+    )
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/v1/documents/import",
+            files={"file": ("empty.txt", b"", "text/plain")},
+        )
+
+    assert response.status_code == 422
+    assert response.json() == {"detail": "Uploaded document cannot be parsed."}
+
+
+def test_document_import_returns_safe_service_error() -> None:
+    import_service = FakeDocumentImportService(
+        error=RuntimeError("secret database error"),
+    )
+    app = create_api_app(
+        agent_service=FakeAgentService(),
+        document_import_service=import_service,
+    )
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/v1/documents/import",
+            files={"file": ("notes.txt", b"text", "text/plain")},
+        )
+
+    assert response.status_code == 503
+    assert response.json() == {"detail": "Document import is temporarily unavailable."}
+    assert "secret database error" not in response.text

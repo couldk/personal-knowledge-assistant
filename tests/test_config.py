@@ -36,6 +36,9 @@ def test_settings_have_safe_defaults(
     assert settings.database_pool_min_size == 1
     assert settings.database_pool_max_size == 10
 
+    assert settings.upload_directory == Path("data/uploads")
+    assert settings.upload_max_bytes == 10 * 1024 * 1024
+
     assert settings.chunk_size == 512
     assert settings.chunk_overlap == 64
 
@@ -118,5 +121,23 @@ def test_database_settings_reject_invalid_values(
         Settings.model_validate(
             {
                 field_name: invalid_value,
+            }
+        )
+
+
+@pytest.mark.parametrize(
+    "invalid_value",
+    [
+        0,
+        101 * 1024 * 1024,
+    ],
+)
+def test_upload_max_bytes_rejects_invalid_values(
+    invalid_value: int,
+) -> None:
+    with pytest.raises(ValidationError):
+        Settings.model_validate(
+            {
+                "upload_max_bytes": invalid_value,
             }
         )

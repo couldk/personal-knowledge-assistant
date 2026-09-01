@@ -1,8 +1,9 @@
 from __future__ import annotations
 
 import os
-from collections.abc import AsyncIterator
+from collections.abc import AsyncIterator, Sequence
 from datetime import UTC, datetime
+from pathlib import Path
 from uuid import uuid4
 
 import psycopg
@@ -10,12 +11,24 @@ import pytest
 import pytest_asyncio
 from psycopg import sql
 
+from personal_knowledge_assistant.application import (
+    DocumentImportService,
+)
+from personal_knowledge_assistant.chunking import SentenceChunker
 from personal_knowledge_assistant.config import Settings
 from personal_knowledge_assistant.domain import (
+    ChunkingConfig,
     ChunkMetadata,
     DocumentChunk,
     DocumentType,
     create_chunk_id,
+)
+from personal_knowledge_assistant.indexing import (
+    DocumentIndexingService,
+    IndexingStatus,
+)
+from personal_knowledge_assistant.ingestion import (
+    create_default_ingestion_service,
 )
 from personal_knowledge_assistant.vector_store.postgres import (
     PgVectorStore,
@@ -30,6 +43,27 @@ pytestmark = [
 ]
 
 DIMENSION = 1024
+
+
+class IntegrationEmbeddingProvider:
+    """为真实 pgvector 验收提供确定性的 1024 维向量。"""
+
+    async def embed_texts(
+        self,
+        texts: Sequence[str],
+    ) -> list[list[float]]:
+        return [self._embed(text) for text in texts]
+
+    async def embed_query(
+        self,
+        query: str,
+    ) -> list[float]:
+        return self._embed(query)
+
+    @staticmethod
+    def _embed(text: str) -> list[float]:
+        lowered = text.casefold()
+        return make_vector(0 if "vector" in lowered else 1)
 
 
 def make_vector(
@@ -247,3 +281,42 @@ async def test_pgvector_deactivate_document(
     assert second_affected == 0
 
     assert all(result.chunk.document_id != document_a.document_id for result in results)
+
+
+@pytest.mark.asyncio
+async def test_document_upload_is_indexed_and_searchable_in_pgvector(
+    pg_store: PgVectorStore,
+    tmp_path: Path,
+) -> None:
+    embedding_provider = IntegrationEmbeddingProvider()
+    indexing_service = DocumentIndexingService(
+        chunker=SentenceChunker(
+            ChunkingConfig(
+                chunk_size=64,
+                chunk_overlap=8,
+            )
+        ),
+        embedding_provider=embedding_provider,
+        vector_store=pg_store,
+    )
+    import_service = DocumentImportService(
+        ingestion_service=create_default_ingestion_service(),
+        indexing_service=indexing_service,
+        upload_directory=tmp_path,
+        max_upload_bytes=1024,
+    )
+
+    outcome = await import_service.import_upload(
+        file_name="day10-vector.txt",
+        content=b"Vector databases support semantic retrieval.",
+    )
+    results = await pg_store.search(
+        await embedding_provider.embed_query("vector search"),
+        limit=5,
+    )
+
+    assert outcome.indexing_status is IndexingStatus.INDEXED
+    assert outcome.chunk_count > 0
+    assert results
+    assert results[0].chunk.document_id == outcome.document_id
+    assert results[0].chunk.metadata.file_name == "day10-vector.txt"

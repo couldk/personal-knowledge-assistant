@@ -85,5 +85,6 @@ app/
 - [部署与运维](05-deployment-and-operations.md)
 - [第八天：PostgreSQL 持久化基础](day8-persistence-foundation.md)
 - [第九天：PostgreSQL + pgvector 向量存储](day9-pgvector-store.md)
+- [第十天：文档上传与自动索引 API](day10-document-import-api.md)
 
 [English documentation](../en/README.md) · [返回项目主页](../../README.md)
