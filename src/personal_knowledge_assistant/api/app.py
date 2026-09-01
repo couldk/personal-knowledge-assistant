@@ -15,6 +15,9 @@ from personal_knowledge_assistant.application import (
 from personal_knowledge_assistant.config import (
     Settings,
 )
+from personal_knowledge_assistant.vector_store import (
+    PgVectorStore,
+)
 
 
 def create_api_app(
@@ -34,19 +37,32 @@ def create_api_app(
     async def lifespan(
         api: FastAPI,
     ) -> AsyncIterator[None]:
-        """在应用启动时只创建一次共享服务。"""
+        """创建共享服务并管理数据库连接池。"""
 
         selected_agent_service = agent_service
+        managed_vector_store: PgVectorStore | None = None
 
         if selected_agent_service is None:
             services = create_application_services(
                 selected_settings,
             )
+
+            if isinstance(
+                services.vector_store,
+                PgVectorStore,
+            ):
+                await services.vector_store.open()
+                managed_vector_store = services.vector_store
+
             selected_agent_service = services.agent_service
 
         api.state.agent_service = selected_agent_service
 
-        yield
+        try:
+            yield
+        finally:
+            if managed_vector_store is not None:
+                await managed_vector_store.close()
 
     api = FastAPI(
         title="Personal Knowledge Assistant API",

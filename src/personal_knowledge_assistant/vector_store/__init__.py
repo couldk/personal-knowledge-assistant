@@ -11,10 +11,14 @@ from personal_knowledge_assistant.vector_store.factory import (
 from personal_knowledge_assistant.vector_store.memory import (
     InMemoryVectorStore,
 )
+from personal_knowledge_assistant.vector_store.postgres import (
+    PgVectorStore,
+)
 
 __all__ = [
     "InMemoryVectorStore",
     "InvalidVectorError",
+    "PgVectorStore",
     "UnsupportedVectorFilterError",
     "VectorCountMismatchError",
     "VectorDimensionMismatchError",

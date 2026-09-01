@@ -83,6 +83,6 @@ app/
 - [实施计划](03-implementation-plan.md)
 - [测试与验收](04-testing-and-acceptance.md)
 - [部署与运维](05-deployment-and-operations.md)
+- [第九天：PostgreSQL + pgvector 向量存储](day9-pgvector-store.md)
 
 [English documentation](../en/README.md) · [返回项目主页](../../README.md)
-

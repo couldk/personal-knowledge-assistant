@@ -25,6 +25,9 @@ from personal_knowledge_assistant.vector_store.factory import (
 from personal_knowledge_assistant.vector_store.memory import (
     InMemoryVectorStore,
 )
+from personal_knowledge_assistant.vector_store.postgres import (
+    PgVectorStore,
+)
 
 
 def _make_chunk(
@@ -557,16 +560,24 @@ def test_factory_requires_embedding_dimension() -> None:
         create_vector_store(settings)
 
 
-def test_factory_reports_unimplemented_pgvector() -> None:
+def test_factory_creates_pgvector_store() -> None:
     settings = Settings.model_validate(
         {
             "vector_store_provider": "pgvector",
             "embedding_dimension": 1024,
+            "database_url": ("postgresql://pka:test@localhost:5432/personal_knowledge"),
+            "database_schema": "pka",
+            "database_pool_min_size": 1,
+            "database_pool_max_size": 5,
+            "database_connect_timeout_seconds": 10,
         }
     )
 
-    with pytest.raises(
-        NotImplementedError,
-        match="PgVectorStore has not been implemented",
-    ):
-        create_vector_store(settings)
+    store = create_vector_store(settings)
+
+    assert isinstance(
+        store,
+        PgVectorStore,
+    )
+    assert store.dimension == 1024
+    assert store.tenant_id == "local"

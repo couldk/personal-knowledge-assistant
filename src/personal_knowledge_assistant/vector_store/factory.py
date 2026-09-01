@@ -5,6 +5,9 @@ from personal_knowledge_assistant.providers.base import (
 from personal_knowledge_assistant.vector_store.memory import (
     InMemoryVectorStore,
 )
+from personal_knowledge_assistant.vector_store.postgres import (
+    PgVectorStore,
+)
 
 
 def create_vector_store(
@@ -21,6 +24,15 @@ def create_vector_store(
         )
 
     if settings.vector_store_provider == "pgvector":
-        raise NotImplementedError("PgVectorStore has not been implemented yet.")
+        return PgVectorStore(
+            database_url=settings.database_url,
+            schema=settings.database_schema,
+            dimension=settings.embedding_dimension,
+            pool_min_size=(settings.database_pool_min_size),
+            pool_max_size=(settings.database_pool_max_size),
+            connect_timeout_seconds=(settings.database_connect_timeout_seconds),
+            # Day 12 接入真实认证后替换。
+            tenant_id="local",
+        )
 
     raise ValueError(f"Unsupported vector store provider: {settings.vector_store_provider}")

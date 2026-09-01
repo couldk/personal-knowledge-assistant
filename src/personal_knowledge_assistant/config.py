@@ -113,8 +113,32 @@ class Settings(BaseSettings):
     ] = "pgvector"
 
     # PostgreSQL连接地址。
-    # 当前只是声明配置，尚未建立真实数据库连接。
-    database_url: str = "postgresql://postgres:postgres@localhost:5432/knowledge"
+    database_url: str = "postgresql://pka:pka-local-password@localhost:5432/personal_knowledge"
+
+    database_schema: str = Field(
+        default="pka",
+        min_length=1,
+        max_length=63,
+        pattern=r"^[a-z_][a-z0-9_]*$",
+    )
+
+    database_connect_timeout_seconds: int = Field(
+        default=10,
+        ge=1,
+        le=60,
+    )
+
+    database_pool_min_size: int = Field(
+        default=1,
+        ge=0,
+        le=20,
+    )
+
+    database_pool_max_size: int = Field(
+        default=10,
+        ge=1,
+        le=100,
+    )
 
     # 文档切块配置，单位为Token。
     chunk_size: int = Field(
@@ -156,6 +180,17 @@ class Settings(BaseSettings):
 
         if self.chunk_overlap >= self.chunk_size:
             raise ValueError("chunk_overlap must be smaller than chunk_size.")
+
+        return self
+
+    @model_validator(mode="after")
+    def validate_database_pool_settings(self) -> Self:
+        """确保数据库连接池最大值不小于最小值。"""
+
+        if self.database_pool_max_size < self.database_pool_min_size:
+            raise ValueError(
+                "database_pool_max_size must be greater than or equal to database_pool_min_size."
+            )
 
         return self
 
