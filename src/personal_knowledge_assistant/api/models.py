@@ -10,6 +10,12 @@ from pydantic import (
 from personal_knowledge_assistant.agent import (
     KnowledgeAgentRequest,
 )
+from personal_knowledge_assistant.domain import (
+    ImportStatus,
+)
+from personal_knowledge_assistant.indexing import (
+    IndexingStatus,
+)
 
 NonEmptyApiText = Annotated[
     str,
@@ -112,3 +118,23 @@ class ApiErrorResponse(BaseModel):
     )
 
     detail: NonEmptyApiText
+
+
+class DocumentImportResponse(BaseModel):
+    """文档上传和索引结果。"""
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+
+    document_id: NonEmptyApiText
+    file_name: NonEmptyApiText
+    content_hash: str = Field(
+        pattern=r"^[0-9a-f]{64}$",
+    )
+    import_status: ImportStatus
+    indexing_status: IndexingStatus
+    chunk_count: int = Field(ge=0)
+    deactivated_chunk_count: int = Field(
+        ge=0,
+    )

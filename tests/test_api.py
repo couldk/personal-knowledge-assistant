@@ -11,6 +11,15 @@ from personal_knowledge_assistant.answering import (
 from personal_knowledge_assistant.api import (
     create_api_app,
 )
+from personal_knowledge_assistant.application import (
+    DocumentImportOutcome,
+)
+from personal_knowledge_assistant.domain import (
+    ImportStatus,
+)
+from personal_knowledge_assistant.indexing import (
+    IndexingStatus,
+)
 
 
 class FakeAgentService:
@@ -74,6 +83,46 @@ class FakeAgentService:
                 thread_id,
                 [],
             )
+        )
+
+
+class FakeDocumentImportService:
+    """API测试使用的文档导入服务。"""
+
+    max_upload_bytes = 1024
+
+    def __init__(
+        self,
+        *,
+        error: Exception | None = None,
+    ) -> None:
+        self.error = error
+        self.uploads: list[tuple[str, bytes]] = []
+
+    async def import_upload(
+        self,
+        *,
+        file_name: str,
+        content: bytes,
+    ) -> DocumentImportOutcome:
+        if self.error is not None:
+            raise self.error
+
+        self.uploads.append(
+            (
+                file_name,
+                content,
+            )
+        )
+
+        return DocumentImportOutcome(
+            import_status=ImportStatus.CREATED,
+            indexing_status=(IndexingStatus.INDEXED),
+            document_id=("file:///uploads/knowledge.txt"),
+            content_hash="a" * 64,
+            file_name=file_name,
+            chunk_count=2,
+            deactivated_chunk_count=0,
         )
 
 
@@ -212,3 +261,67 @@ def test_agent_query_returns_safe_service_error() -> None:
     }
 
     assert "secret provider error" not in (response.text)
+
+
+def test_document_import_uploads_file() -> None:
+    agent_service = FakeAgentService()
+    import_service = FakeDocumentImportService()
+
+    app = create_api_app(
+        agent_service=agent_service,
+        document_import_service=(import_service),
+    )
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/v1/documents/import",
+            files={
+                "file": (
+                    "knowledge.txt",
+                    b"Vector databases support search.",
+                    "text/plain",
+                )
+            },
+        )
+
+    assert response.status_code == 200
+    assert response.json() == {
+        "document_id": ("file:///uploads/knowledge.txt"),
+        "file_name": "knowledge.txt",
+        "content_hash": "a" * 64,
+        "import_status": "created",
+        "indexing_status": "indexed",
+        "chunk_count": 2,
+        "deactivated_chunk_count": 0,
+    }
+
+    assert import_service.uploads == [
+        (
+            "knowledge.txt",
+            b"Vector databases support search.",
+        )
+    ]
+
+
+def test_document_import_rejects_large_file() -> None:
+    agent_service = FakeAgentService()
+    import_service = FakeDocumentImportService()
+
+    app = create_api_app(
+        agent_service=agent_service,
+        document_import_service=(import_service),
+    )
+
+    with TestClient(app) as client:
+        response = client.post(
+            "/api/v1/documents/import",
+            files={
+                "file": (
+                    "large.txt",
+                    b"x" * 1025,
+                    "text/plain",
+                )
+            },
+        )
+
+    assert response.status_code == 413

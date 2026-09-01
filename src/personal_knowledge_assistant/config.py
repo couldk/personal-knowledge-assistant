@@ -1,4 +1,5 @@
 from functools import lru_cache
+from pathlib import Path
 from typing import Literal, Self
 
 from pydantic import (
@@ -138,6 +139,16 @@ class Settings(BaseSettings):
         default=10,
         ge=1,
         le=100,
+    )
+
+    # 上传文件保存目录。
+    upload_directory: Path = Path("data/uploads")
+
+    # 单个上传文件最大10 MiB。
+    upload_max_bytes: int = Field(
+        default=10 * 1024 * 1024,
+        ge=1024,
+        le=100 * 1024 * 1024,
     )
 
     # 文档切块配置，单位为Token。

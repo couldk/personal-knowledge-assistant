@@ -4,7 +4,9 @@ from typing import Annotated
 from fastapi import (
     APIRouter,
     Depends,
+    File,
     HTTPException,
+    UploadFile,
     status,
 )
 
@@ -13,13 +15,24 @@ from personal_knowledge_assistant.agent import (
 )
 from personal_knowledge_assistant.api.dependencies import (
     AgentServiceProtocol,
+    DocumentImportServiceProtocol,
     get_agent_service,
+    get_document_import_service,
 )
 from personal_knowledge_assistant.api.models import (
     AgentHistoryResponse,
     AgentQueryRequest,
     ApiErrorResponse,
+    DocumentImportResponse,
     HealthResponse,
+)
+from personal_knowledge_assistant.application import (
+    InvalidUploadFileNameError,
+    UnsupportedUploadTypeError,
+    UploadTooLargeError,
+)
+from personal_knowledge_assistant.ingestion import (
+    IngestionError,
 )
 
 logger = logging.getLogger(__name__)
@@ -29,6 +42,11 @@ router = APIRouter()
 AgentServiceDependency = Annotated[
     AgentServiceProtocol,
     Depends(get_agent_service),
+]
+
+DocumentImportServiceDependency = Annotated[
+    DocumentImportServiceProtocol,
+    Depends(get_document_import_service),
 ]
 
 
@@ -80,7 +98,7 @@ async def query_agent(
     payload: AgentQueryRequest,
     agent_service: AgentServiceDependency,
 ) -> KnowledgeAgentResult:
-    """执行一次知识 Agent 查询。"""
+    """执行一次知识Agent查询。"""
 
     try:
         return await agent_service.run(
@@ -155,4 +173,100 @@ async def get_agent_history(
     return AgentHistoryResponse(
         thread_id=normalized_thread_id,
         questions=questions,
+    )
+
+
+@router.post(
+    "/api/v1/documents/import",
+    response_model=DocumentImportResponse,
+    responses={
+        status.HTTP_400_BAD_REQUEST: {
+            "model": ApiErrorResponse,
+            "description": "Invalid file name.",
+        },
+        status.HTTP_413_CONTENT_TOO_LARGE: {
+            "model": ApiErrorResponse,
+            "description": ("Uploaded document is too large."),
+        },
+        status.HTTP_415_UNSUPPORTED_MEDIA_TYPE: {
+            "model": ApiErrorResponse,
+            "description": ("Unsupported document type."),
+        },
+        status.HTTP_422_UNPROCESSABLE_CONTENT: {
+            "model": ApiErrorResponse,
+            "description": ("Document cannot be parsed."),
+        },
+        status.HTTP_503_SERVICE_UNAVAILABLE: {
+            "model": ApiErrorResponse,
+            "description": ("Document import is unavailable."),
+        },
+    },
+    tags=["documents"],
+)
+async def import_document(
+    file: Annotated[
+        UploadFile,
+        File(),
+    ],
+    document_import_service: (DocumentImportServiceDependency),
+) -> DocumentImportResponse:
+    """上传、解析并索引一个文档。"""
+
+    file_name = file.filename or ""
+
+    try:
+        # 只读取“最大允许大小+1”字节。
+        # 如果多出的1字节存在，立即返回413。
+        content = await file.read(document_import_service.max_upload_bytes + 1)
+
+        if len(content) > document_import_service.max_upload_bytes:
+            raise UploadTooLargeError("Uploaded document exceeds the size limit.")
+
+        outcome = await document_import_service.import_upload(
+            file_name=file_name,
+            content=content,
+        )
+    except UploadTooLargeError as exc:
+        raise HTTPException(
+            status_code=(status.HTTP_413_CONTENT_TOO_LARGE),
+            detail=("Uploaded document is too large."),
+        ) from exc
+    except UnsupportedUploadTypeError as exc:
+        raise HTTPException(
+            status_code=(status.HTTP_415_UNSUPPORTED_MEDIA_TYPE),
+            detail=("Only TXT, Markdown and PDF are supported."),
+        ) from exc
+    except InvalidUploadFileNameError as exc:
+        raise HTTPException(
+            status_code=(status.HTTP_400_BAD_REQUEST),
+            detail=("Upload file name is invalid."),
+        ) from exc
+    except IngestionError as exc:
+        raise HTTPException(
+            status_code=(status.HTTP_422_UNPROCESSABLE_CONTENT),
+            detail=("Uploaded document cannot be parsed."),
+        ) from exc
+    except Exception as exc:
+        logger.exception(
+            "document_import_failed",
+            extra={
+                "error_type": type(exc).__name__,
+            },
+        )
+
+        raise HTTPException(
+            status_code=(status.HTTP_503_SERVICE_UNAVAILABLE),
+            detail=("Document import is temporarily unavailable."),
+        ) from exc
+    finally:
+        await file.close()
+
+    return DocumentImportResponse(
+        document_id=outcome.document_id,
+        file_name=outcome.file_name,
+        content_hash=outcome.content_hash,
+        import_status=outcome.import_status,
+        indexing_status=outcome.indexing_status,
+        chunk_count=outcome.chunk_count,
+        deactivated_chunk_count=(outcome.deactivated_chunk_count),
     )

@@ -6,8 +6,14 @@ from personal_knowledge_assistant.agent import (
 from personal_knowledge_assistant.answering import (
     AnsweringService,
 )
+from personal_knowledge_assistant.application.document_import import (
+    DocumentImportService,
+)
 from personal_knowledge_assistant.indexing import (
     DocumentIndexingService,
+)
+from personal_knowledge_assistant.ingestion import (
+    DocumentIngestionService,
 )
 from personal_knowledge_assistant.providers.base import (
     ChatProvider,
@@ -30,7 +36,9 @@ class ApplicationServices:
     embedding_provider: EmbeddingProvider
     vector_store: VectorStoreProvider
 
+    ingestion_service: DocumentIngestionService
     indexing_service: DocumentIndexingService
+    document_import_service: DocumentImportService
     retrieval_service: RetrievalService
     answering_service: AnsweringService
     query_service: KnowledgeQueryService

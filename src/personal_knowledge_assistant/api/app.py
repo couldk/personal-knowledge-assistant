@@ -5,6 +5,7 @@ from fastapi import FastAPI
 
 from personal_knowledge_assistant.api.dependencies import (
     AgentServiceProtocol,
+    DocumentImportServiceProtocol,
 )
 from personal_knowledge_assistant.api.routes import (
     router,
@@ -24,10 +25,11 @@ def create_api_app(
     settings: Settings | None = None,
     *,
     agent_service: (AgentServiceProtocol | None) = None,
+    document_import_service: (DocumentImportServiceProtocol | None) = None,
 ) -> FastAPI:
-    """创建个人知识助手 FastAPI 应用。
+    """创建个人知识助手FastAPI应用。
 
-    测试可以注入 Fake Agent Service，
+    测试可以注入Fake Service，
     生产运行则由应用工厂创建真实服务。
     """
 
@@ -40,9 +42,13 @@ def create_api_app(
         """创建共享服务并管理数据库连接池。"""
 
         selected_agent_service = agent_service
+        selected_document_import_service = document_import_service
+
         managed_vector_store: PgVectorStore | None = None
 
-        if selected_agent_service is None:
+        # 生产环境没有注入Fake Service，
+        # 因此创建完整的真实应用服务。
+        if selected_agent_service is None and selected_document_import_service is None:
             services = create_application_services(
                 selected_settings,
             )
@@ -55,8 +61,10 @@ def create_api_app(
                 managed_vector_store = services.vector_store
 
             selected_agent_service = services.agent_service
+            selected_document_import_service = services.document_import_service
 
         api.state.agent_service = selected_agent_service
+        api.state.document_import_service = selected_document_import_service
 
         try:
             yield
@@ -65,7 +73,7 @@ def create_api_app(
                 await managed_vector_store.close()
 
     api = FastAPI(
-        title="Personal Knowledge Assistant API",
+        title=("Personal Knowledge Assistant API"),
         description=("Evidence-grounded LangGraph personal knowledge assistant."),
         version="0.1.0",
         lifespan=lifespan,

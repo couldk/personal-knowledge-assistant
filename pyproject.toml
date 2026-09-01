@@ -19,6 +19,7 @@ dependencies = [
     "pydantic>=2.13.4",
     "pydantic-settings>=2.14.2",
     "pypdf>=6.15.0",
+    "python-multipart>=0.0.20",
 ]
 
 [tool.hatch.build.targets.wheel]

@@ -9,6 +9,9 @@ from personal_knowledge_assistant.answering import (
     AnsweringTracer,
     create_answering_service,
 )
+from personal_knowledge_assistant.application.document_import import (
+    DocumentImportService,
+)
 from personal_knowledge_assistant.application.models import (
     ApplicationServices,
 )
@@ -21,6 +24,9 @@ from personal_knowledge_assistant.domain import (
 )
 from personal_knowledge_assistant.indexing import (
     DocumentIndexingService,
+)
+from personal_knowledge_assistant.ingestion import (
+    create_default_ingestion_service,
 )
 from personal_knowledge_assistant.providers.factory import (
     create_chat_provider,
@@ -64,6 +70,15 @@ def create_application_services(
         vector_store=vector_store,
     )
 
+    ingestion_service = create_default_ingestion_service()
+
+    document_import_service = DocumentImportService(
+        ingestion_service=ingestion_service,
+        indexing_service=indexing_service,
+        upload_directory=settings.upload_directory,
+        max_upload_bytes=settings.upload_max_bytes,
+    )
+
     retrieval_service = create_retrieval_service(
         settings=settings,
         embedding_provider=embedding_provider,
@@ -93,7 +108,9 @@ def create_application_services(
         chat_provider=chat_provider,
         embedding_provider=embedding_provider,
         vector_store=vector_store,
+        ingestion_service=ingestion_service,
         indexing_service=indexing_service,
+        document_import_service=(document_import_service),
         retrieval_service=retrieval_service,
         answering_service=answering_service,
         query_service=query_service,
