@@ -28,6 +28,14 @@ def test_settings_have_safe_defaults(
     assert settings.embedding_dimension is None
     assert settings.embedding_base_url == "https://api.siliconflow.cn/v1"
 
+    assert settings.database_url == (
+        "postgresql://pka:pka-local-password@localhost:5432/personal_knowledge"
+    )
+    assert settings.database_schema == "pka"
+    assert settings.database_connect_timeout_seconds == 10
+    assert settings.database_pool_min_size == 1
+    assert settings.database_pool_max_size == 10
+
     assert settings.chunk_size == 512
     assert settings.chunk_overlap == 64
 
@@ -65,6 +73,46 @@ def test_chunk_overlap_must_be_smaller_than_chunk_size() -> None:
 def test_chat_settings_reject_invalid_values(
     field_name: str,
     invalid_value: int | float,
+) -> None:
+    with pytest.raises(ValidationError):
+        Settings.model_validate(
+            {
+                field_name: invalid_value,
+            }
+        )
+
+
+def test_database_schema_rejects_unsafe_identifier() -> None:
+    with pytest.raises(ValidationError):
+        Settings.model_validate(
+            {
+                "database_schema": "pka; DROP TABLE documents;",
+            }
+        )
+
+
+def test_database_pool_max_size_cannot_be_smaller_than_min_size() -> None:
+    with pytest.raises(ValidationError):
+        Settings.model_validate(
+            {
+                "database_pool_min_size": 5,
+                "database_pool_max_size": 4,
+            }
+        )
+
+
+@pytest.mark.parametrize(
+    ("field_name", "invalid_value"),
+    [
+        ("database_connect_timeout_seconds", 0),
+        ("database_connect_timeout_seconds", 61),
+        ("database_pool_min_size", -1),
+        ("database_pool_max_size", 0),
+    ],
+)
+def test_database_settings_reject_invalid_values(
+    field_name: str,
+    invalid_value: int,
 ) -> None:
     with pytest.raises(ValidationError):
         Settings.model_validate(
