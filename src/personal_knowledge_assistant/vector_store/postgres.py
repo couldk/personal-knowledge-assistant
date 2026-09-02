@@ -4,6 +4,7 @@ from collections.abc import Sequence
 from datetime import datetime
 from math import fsum, isfinite, sqrt
 from typing import Any
+from uuid import UUID
 
 import psycopg
 from pgvector import Vector
@@ -15,8 +16,11 @@ from psycopg_pool import AsyncConnectionPool
 from personal_knowledge_assistant.domain import (
     ChunkMetadata,
     DocumentChunk,
+    DocumentListResult,
+    DocumentStatus,
     DocumentType,
     SearchResult,
+    StoredDocument,
 )
 from personal_knowledge_assistant.vector_store.exceptions import (
     InvalidVectorError,
@@ -686,3 +690,304 @@ class PgVectorStore:
             raise VectorStoreError("PostgreSQL document deactivation failed.") from exc
 
         return max(0, affected)
+
+    async def get_document_by_id(
+        self,
+        document_id: str,
+    ) -> StoredDocument | None:
+        """根据稳定的document_id查询文档。"""
+
+        normalized_document_id = document_id.strip()
+
+        if not normalized_document_id:
+            raise ValueError("Document ID cannot be empty.")
+
+        return await self._fetch_document(
+            where_clause=sql.SQL("document.document_id = %s"),
+            value=normalized_document_id,
+        )
+
+    async def get_document(
+        self,
+        document_key: UUID,
+    ) -> StoredDocument | None:
+        """根据数据库UUID主键查询文档。"""
+
+        return await self._fetch_document(
+            where_clause=sql.SQL("document.id = %s"),
+            value=document_key,
+        )
+
+    async def _fetch_document(
+        self,
+        *,
+        where_clause: sql.Composable,
+        value: str | UUID,
+    ) -> StoredDocument | None:
+        """执行单个文档查询。"""
+
+        query = sql.SQL(
+            """
+            SELECT
+                document.id,
+                document.tenant_id,
+                document.document_id,
+                document.source_path,
+                document.file_name,
+                document.document_type,
+                document.title,
+                document.status,
+                version.content_hash,
+                COUNT(chunk.id) FILTER (
+                    WHERE chunk.active = TRUE
+                ) AS active_chunk_count,
+                document.created_at,
+                document.updated_at
+            FROM {}.documents AS document
+            LEFT JOIN {}.document_versions AS version
+                ON version.document_key = document.id
+               AND version.active = TRUE
+            LEFT JOIN {}.document_chunks AS chunk
+                ON chunk.document_key = document.id
+               AND chunk.active = TRUE
+            WHERE document.tenant_id = %s
+              AND {}
+            GROUP BY
+                document.id,
+                version.content_hash
+            """
+        ).format(
+            sql.Identifier(self._schema),
+            sql.Identifier(self._schema),
+            sql.Identifier(self._schema),
+            where_clause,
+        )
+
+        try:
+            async with self._pool.connection() as connection:
+                cursor = await connection.execute(
+                    query,
+                    (
+                        self._tenant_id,
+                        value,
+                    ),
+                )
+                row = await cursor.fetchone()
+        except psycopg.Error as exc:
+            raise VectorStoreError("PostgreSQL document query failed.") from exc
+
+        return self._document_from_row(row)
+
+    async def list_documents(
+        self,
+        *,
+        limit: int,
+        offset: int,
+        include_deleted: bool = False,
+    ) -> DocumentListResult:
+        """分页查询当前租户的文档。"""
+
+        if limit < 1:
+            raise ValueError("Document list limit must be greater than zero.")
+
+        if limit > 100:
+            raise ValueError("Document list limit cannot exceed 100.")
+
+        if offset < 0:
+            raise ValueError("Document list offset cannot be negative.")
+
+        where_parts: list[sql.Composable] = [
+            sql.SQL("document.tenant_id = %s"),
+        ]
+
+        if not include_deleted:
+            where_parts.append(sql.SQL("document.status <> 'deleted'"))
+
+        where_clause = sql.SQL(" AND ").join(where_parts)
+
+        list_query = sql.SQL(
+            """
+            SELECT
+                document.id,
+                document.tenant_id,
+                document.document_id,
+                document.source_path,
+                document.file_name,
+                document.document_type,
+                document.title,
+                document.status,
+                version.content_hash,
+                COUNT(chunk.id) FILTER (
+                    WHERE chunk.active = TRUE
+                ) AS active_chunk_count,
+                document.created_at,
+                document.updated_at
+            FROM {}.documents AS document
+            LEFT JOIN {}.document_versions AS version
+                ON version.document_key = document.id
+               AND version.active = TRUE
+            LEFT JOIN {}.document_chunks AS chunk
+                ON chunk.document_key = document.id
+               AND chunk.active = TRUE
+            WHERE {}
+            GROUP BY
+                document.id,
+                version.content_hash
+            ORDER BY
+                document.updated_at DESC,
+                document.id ASC
+            LIMIT %s
+            OFFSET %s
+            """
+        ).format(
+            sql.Identifier(self._schema),
+            sql.Identifier(self._schema),
+            sql.Identifier(self._schema),
+            where_clause,
+        )
+
+        count_query = sql.SQL(
+            """
+            SELECT COUNT(*)
+            FROM {}.documents AS document
+            WHERE {}
+            """
+        ).format(
+            sql.Identifier(self._schema),
+            where_clause,
+        )
+
+        try:
+            async with self._pool.connection() as connection:
+                list_cursor = await connection.execute(
+                    list_query,
+                    (
+                        self._tenant_id,
+                        limit,
+                        offset,
+                    ),
+                )
+                rows = await list_cursor.fetchall()
+
+                count_cursor = await connection.execute(
+                    count_query,
+                    (self._tenant_id,),
+                )
+                count_row = await count_cursor.fetchone()
+        except psycopg.Error as exc:
+            raise VectorStoreError("PostgreSQL document list query failed.") from exc
+
+        if count_row is None:
+            raise VectorStoreError("PostgreSQL document count returned no result.")
+
+        return DocumentListResult(
+            items=[self._document_from_required_row(row) for row in rows],
+            total=int(count_row[0]),
+            limit=limit,
+            offset=offset,
+        )
+
+    async def delete_document(
+        self,
+        document_key: UUID,
+    ) -> bool:
+        """软删除文档并停用相关版本和Chunk。"""
+
+        document_query = sql.SQL(
+            """
+            UPDATE {}.documents
+            SET
+                status = 'deleted',
+                updated_at = CURRENT_TIMESTAMP
+            WHERE id = %s
+              AND tenant_id = %s
+              AND status <> 'deleted'
+            """
+        ).format(sql.Identifier(self._schema))
+
+        version_query = sql.SQL(
+            """
+            UPDATE {}.document_versions
+            SET
+                active = FALSE,
+                deactivated_at = CURRENT_TIMESTAMP
+            WHERE document_key = %s
+              AND active = TRUE
+            """
+        ).format(sql.Identifier(self._schema))
+
+        chunk_query = sql.SQL(
+            """
+            UPDATE {}.document_chunks
+            SET
+                active = FALSE,
+                deactivated_at = CURRENT_TIMESTAMP
+            WHERE document_key = %s
+              AND tenant_id = %s
+              AND active = TRUE
+            """
+        ).format(sql.Identifier(self._schema))
+
+        try:
+            async with self._pool.connection() as connection:
+                document_cursor = await connection.execute(
+                    document_query,
+                    (
+                        document_key,
+                        self._tenant_id,
+                    ),
+                )
+
+                if document_cursor.rowcount <= 0:
+                    return False
+
+                await connection.execute(
+                    version_query,
+                    (document_key,),
+                )
+
+                await connection.execute(
+                    chunk_query,
+                    (
+                        document_key,
+                        self._tenant_id,
+                    ),
+                )
+        except psycopg.Error as exc:
+            raise VectorStoreError("PostgreSQL document deletion failed.") from exc
+
+        return True
+
+    def _document_from_row(
+        self,
+        row: Sequence[Any] | None,
+    ) -> StoredDocument | None:
+        """把数据库记录转换为领域模型。"""
+
+        if row is None:
+            return None
+
+        return self._document_from_required_row(row)
+
+    def _document_from_required_row(
+        self,
+        row: Sequence[Any],
+    ) -> StoredDocument:
+        """把非空数据库记录转换为领域模型。"""
+
+        content_hash = str(row[8]).strip() if row[8] is not None else None
+
+        return StoredDocument(
+            document_key=row[0],
+            tenant_id=str(row[1]),
+            document_id=str(row[2]),
+            source_path=str(row[3]),
+            file_name=str(row[4]),
+            document_type=DocumentType(str(row[5])),
+            title=(str(row[6]) if row[6] is not None else None),
+            status=DocumentStatus(str(row[7])),
+            active_content_hash=content_hash,
+            active_chunk_count=int(row[9]),
+            created_at=row[10],
+            updated_at=row[11],
+        )

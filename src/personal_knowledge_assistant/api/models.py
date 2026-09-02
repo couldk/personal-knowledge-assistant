@@ -1,4 +1,6 @@
+from datetime import datetime
 from typing import Annotated, Literal
+from uuid import UUID
 
 from pydantic import (
     BaseModel,
@@ -11,6 +13,8 @@ from personal_knowledge_assistant.agent import (
     KnowledgeAgentRequest,
 )
 from personal_knowledge_assistant.domain import (
+    DocumentStatus,
+    DocumentType,
     ImportStatus,
 )
 from personal_knowledge_assistant.indexing import (
@@ -34,6 +38,38 @@ ThreadId = Annotated[
         pattern=r"^[A-Za-z0-9._:-]+$",
     ),
 ]
+
+
+class DocumentResponse(BaseModel):
+    """单个持久化文档的当前状态。"""
+
+    model_config = ConfigDict(
+        extra="forbid",
+        from_attributes=True,
+    )
+
+    document_key: UUID
+    document_id: NonEmptyApiText
+    file_name: NonEmptyApiText
+    document_type: DocumentType
+    status: DocumentStatus
+    active_content_hash: str | None = None
+    active_chunk_count: int = Field(ge=0)
+    created_at: datetime
+    updated_at: datetime
+
+
+class DocumentListResponse(BaseModel):
+    """分页文档列表响应。"""
+
+    model_config = ConfigDict(
+        extra="forbid",
+    )
+
+    items: list[DocumentResponse]
+    total: int = Field(ge=0)
+    limit: int = Field(ge=1)
+    offset: int = Field(ge=0)
 
 
 class HealthResponse(BaseModel):

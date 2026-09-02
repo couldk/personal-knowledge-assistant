@@ -6,7 +6,9 @@ from pathlib import Path
 from tempfile import NamedTemporaryFile
 
 from personal_knowledge_assistant.domain import (
+    ImportResult,
     ImportStatus,
+    StoredDocument,
 )
 from personal_knowledge_assistant.indexing import (
     DocumentIndexingService,
@@ -14,6 +16,9 @@ from personal_knowledge_assistant.indexing import (
 )
 from personal_knowledge_assistant.ingestion import (
     DocumentIngestionService,
+)
+from personal_knowledge_assistant.providers.base import (
+    DocumentStoreProvider,
 )
 
 
@@ -96,6 +101,7 @@ class DocumentImportService:
         indexing_service: DocumentIndexingService,
         upload_directory: Path,
         max_upload_bytes: int,
+        document_store: DocumentStoreProvider | None = None,
     ) -> None:
         if max_upload_bytes <= 0:
             raise ValueError("max_upload_bytes must be greater than zero.")
@@ -104,6 +110,10 @@ class DocumentImportService:
         self._indexing_service = indexing_service
         self._upload_directory = upload_directory
         self._max_upload_bytes = max_upload_bytes
+
+        # pgvector 模式下使用 PostgreSQL 中的持久化文档状态。
+        # memory 模式和普通单元测试可以不提供。
+        self._document_store = document_store
 
     @property
     def max_upload_bytes(self) -> int:
@@ -116,6 +126,7 @@ class DocumentImportService:
         *,
         file_name: str,
         content: bytes,
+        force_reindex: bool = False,
     ) -> DocumentImportOutcome:
         """保存上传文件，并完成导入和索引。"""
 
@@ -130,21 +141,77 @@ class DocumentImportService:
             content,
         )
 
+        # Loader 和本地内存 Catalog 都是同步实现，
+        # 放到工作线程中执行，避免阻塞 FastAPI 事件循环。
         import_result = await to_thread(
             self._ingestion_service.import_document,
             stored_path,
         )
 
-        indexing_result = await self._indexing_service.index(import_result)
+        # 如果配置了 PostgreSQL 文档存储，
+        # 使用数据库中的活动版本重新判断导入状态。
+        if self._document_store is not None:
+            stored_document = await self._document_store.get_document_by_id(
+                import_result.document.document_id
+            )
+
+            import_result = self._apply_persistent_import_status(
+                import_result=import_result,
+                stored_document=stored_document,
+            )
+
+        indexing_result = await self._indexing_service.index(
+            import_result,
+            force=force_reindex,
+        )
 
         return DocumentImportOutcome(
             import_status=import_result.status,
             indexing_status=indexing_result.status,
-            document_id=(indexing_result.document_id),
-            content_hash=(indexing_result.content_hash),
+            document_id=indexing_result.document_id,
+            content_hash=indexing_result.content_hash,
             file_name=(import_result.document.metadata.file_name),
             chunk_count=indexing_result.chunk_count,
             deactivated_chunk_count=(indexing_result.deactivated_chunk_count),
+        )
+
+    def _apply_persistent_import_status(
+        self,
+        *,
+        import_result: ImportResult,
+        stored_document: StoredDocument | None,
+    ) -> ImportResult:
+        """根据PostgreSQL活动版本重新判断导入状态。
+
+        InMemoryDocumentCatalog 会在应用重启后清空，
+        因此生产环境必须以 PostgreSQL 中的活动版本为准。
+        """
+
+        document = import_result.document
+
+        # 数据库中完全不存在，或者文档已删除且不存在活动版本。
+        if stored_document is None or stored_document.active_content_hash is None:
+            return ImportResult(
+                status=ImportStatus.CREATED,
+                document=document,
+                previous_content_hash=None,
+            )
+
+        previous_content_hash = stored_document.active_content_hash
+
+        # 文件内容与数据库活动版本相同，不重新生成向量。
+        if previous_content_hash == document.content_hash:
+            return ImportResult(
+                status=ImportStatus.UNCHANGED,
+                document=document,
+                previous_content_hash=(previous_content_hash),
+            )
+
+        # document_id 相同但内容哈希不同，属于文档更新。
+        return ImportResult(
+            status=ImportStatus.UPDATED,
+            document=document,
+            previous_content_hash=(previous_content_hash),
         )
 
     def _validate_file_name(
@@ -170,8 +237,12 @@ class DocumentImportService:
         if suffix not in self._SUPPORTED_EXTENSIONS:
             raise UnsupportedUploadTypeError(f"Unsupported upload type: {suffix or '<none>'}")
 
-        # Windows 会把 CON.txt 和 CON.backup.txt 等名称都视为保留设备名。
-        reserved_name_candidate = path.name.split(".", maxsplit=1)[0].casefold()
+        # Windows 会把 CON.txt、CON.backup.txt 等
+        # 文件名都识别为保留设备名。
+        reserved_name_candidate = path.name.split(
+            ".",
+            maxsplit=1,
+        )[0].casefold()
 
         if reserved_name_candidate in self._WINDOWS_RESERVED_NAMES:
             raise InvalidUploadFileNameError("Upload file name is reserved by Windows.")
@@ -187,6 +258,7 @@ class DocumentImportService:
 
         try:
             upload_root = self._upload_directory.expanduser().resolve()
+
             upload_root.mkdir(
                 parents=True,
                 exist_ok=True,
@@ -213,9 +285,7 @@ class DocumentImportService:
                 temporary_path.replace(destination)
             finally:
                 if temporary_path is not None:
-                    temporary_path.unlink(
-                        missing_ok=True,
-                    )
+                    temporary_path.unlink(missing_ok=True)
 
             return destination
         except DocumentUploadError:

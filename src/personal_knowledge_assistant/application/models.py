@@ -9,6 +9,9 @@ from personal_knowledge_assistant.answering import (
 from personal_knowledge_assistant.application.document_import import (
     DocumentImportService,
 )
+from personal_knowledge_assistant.application.document_management import (
+    DocumentManagementService,
+)
 from personal_knowledge_assistant.indexing import (
     DocumentIndexingService,
 )
@@ -39,6 +42,7 @@ class ApplicationServices:
     ingestion_service: DocumentIngestionService
     indexing_service: DocumentIndexingService
     document_import_service: DocumentImportService
+    document_management_service: DocumentManagementService | None
     retrieval_service: RetrievalService
     answering_service: AnsweringService
     query_service: KnowledgeQueryService

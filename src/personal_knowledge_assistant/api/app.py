@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from personal_knowledge_assistant.api.dependencies import (
     AgentServiceProtocol,
     DocumentImportServiceProtocol,
+    DocumentManagementServiceProtocol,
 )
 from personal_knowledge_assistant.api.routes import (
     router,
@@ -26,6 +27,7 @@ def create_api_app(
     *,
     agent_service: (AgentServiceProtocol | None) = None,
     document_import_service: (DocumentImportServiceProtocol | None) = None,
+    document_management_service: (DocumentManagementServiceProtocol | None) = None,
 ) -> FastAPI:
     """创建个人知识助手FastAPI应用。
 
@@ -43,12 +45,17 @@ def create_api_app(
 
         selected_agent_service = agent_service
         selected_document_import_service = document_import_service
+        selected_document_management_service = document_management_service
 
         managed_vector_store: PgVectorStore | None = None
 
         # 生产环境没有注入Fake Service，
         # 因此创建完整的真实应用服务。
-        if selected_agent_service is None and selected_document_import_service is None:
+        if (
+            selected_agent_service is None
+            and selected_document_import_service is None
+            and selected_document_management_service is None
+        ):
             services = create_application_services(
                 selected_settings,
             )
@@ -62,9 +69,11 @@ def create_api_app(
 
             selected_agent_service = services.agent_service
             selected_document_import_service = services.document_import_service
+            selected_document_management_service = services.document_management_service
 
         api.state.agent_service = selected_agent_service
         api.state.document_import_service = selected_document_import_service
+        api.state.document_management_service = selected_document_management_service
 
         try:
             yield

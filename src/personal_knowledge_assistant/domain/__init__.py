@@ -1,3 +1,8 @@
+from personal_knowledge_assistant.domain.document_management import (
+    DocumentListResult,
+    DocumentStatus,
+    StoredDocument,
+)
 from personal_knowledge_assistant.domain.documents import (
     DocumentMetadata,
     DocumentPart,
@@ -30,6 +35,8 @@ __all__ = [
     "DocumentMetadata",
     "DocumentPart",
     "DocumentType",
+    "DocumentListResult",
+    "DocumentStatus",
     "ImportResult",
     "ImportStatus",
     "LoadedDocument",
@@ -37,5 +44,6 @@ __all__ = [
     "RetrievalQuery",
     "SearchResult",
     "Sha256Hash",
+    "StoredDocument",
     "create_chunk_id",
 ]

@@ -136,6 +136,28 @@ async def test_repeated_upload_is_skipped(
 
 
 @pytest.mark.asyncio
+async def test_force_reindex_indexes_unchanged_upload(
+    tmp_path: Path,
+) -> None:
+    service, _ = create_service(tmp_path)
+    content = b"Memory can be reindexed."
+
+    await service.import_upload(
+        file_name="memory.txt",
+        content=content,
+    )
+    forced = await service.import_upload(
+        file_name="memory.txt",
+        content=content,
+        force_reindex=True,
+    )
+
+    assert forced.import_status is ImportStatus.UNCHANGED
+    assert forced.indexing_status is IndexingStatus.INDEXED
+    assert forced.chunk_count > 0
+
+
+@pytest.mark.asyncio
 async def test_updated_upload_deactivates_old_chunks(
     tmp_path: Path,
 ) -> None:

@@ -191,6 +191,7 @@ async def test_application_services_share_dependencies_and_tracers(
     assert services.vector_store is vector_store
     assert services.agent_service is not None
     assert services.document_import_service.max_upload_bytes == (settings.upload_max_bytes)
+    assert services.document_management_service is None
 
     document = _make_document()
 

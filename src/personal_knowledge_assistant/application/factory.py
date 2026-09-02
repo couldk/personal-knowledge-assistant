@@ -12,6 +12,9 @@ from personal_knowledge_assistant.answering import (
 from personal_knowledge_assistant.application.document_import import (
     DocumentImportService,
 )
+from personal_knowledge_assistant.application.document_management import (
+    DocumentManagementService,
+)
 from personal_knowledge_assistant.application.models import (
     ApplicationServices,
 )
@@ -40,6 +43,7 @@ from personal_knowledge_assistant.retrieval import (
     create_retrieval_service,
 )
 from personal_knowledge_assistant.vector_store import (
+    PgVectorStore,
     create_vector_store,
 )
 
@@ -54,16 +58,16 @@ def create_application_services(
     """创建并连接应用服务。"""
 
     chat_provider = create_chat_provider(settings)
-    embedding_provider = create_embedding_provider(
-        settings,
-    )
+
+    embedding_provider = create_embedding_provider(settings)
+
     vector_store = create_vector_store(settings)
 
     indexing_service = DocumentIndexingService(
         chunker=SentenceChunker(
             ChunkingConfig(
                 chunk_size=settings.chunk_size,
-                chunk_overlap=settings.chunk_overlap,
+                chunk_overlap=(settings.chunk_overlap),
             )
         ),
         embedding_provider=embedding_provider,
@@ -72,11 +76,25 @@ def create_application_services(
 
     ingestion_service = create_default_ingestion_service()
 
+    # 只有 PgVectorStore 实现了持久化文档目录接口。
+    # 内存向量库继续使用原来的内存导入判断。
+    document_store = vector_store if isinstance(vector_store, PgVectorStore) else None
+
     document_import_service = DocumentImportService(
         ingestion_service=ingestion_service,
         indexing_service=indexing_service,
-        upload_directory=settings.upload_directory,
-        max_upload_bytes=settings.upload_max_bytes,
+        upload_directory=(settings.upload_directory),
+        max_upload_bytes=(settings.upload_max_bytes),
+        document_store=document_store,
+    )
+
+    document_management_service = (
+        DocumentManagementService(
+            document_store=vector_store,
+            document_import_service=document_import_service,
+        )
+        if isinstance(vector_store, PgVectorStore)
+        else None
     )
 
     retrieval_service = create_retrieval_service(
@@ -111,6 +129,7 @@ def create_application_services(
         ingestion_service=ingestion_service,
         indexing_service=indexing_service,
         document_import_service=(document_import_service),
+        document_management_service=document_management_service,
         retrieval_service=retrieval_service,
         answering_service=answering_service,
         query_service=query_service,

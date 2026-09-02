@@ -1,6 +1,11 @@
 from collections.abc import Sequence
 from typing import Protocol, runtime_checkable
+from uuid import UUID
 
+from personal_knowledge_assistant.domain.document_management import (
+    DocumentListResult,
+    StoredDocument,
+)
 from personal_knowledge_assistant.domain.models import (
     ChatMessage,
     ChatResponse,
@@ -79,4 +84,43 @@ class VectorStoreProvider(Protocol):
         document_id: str,
     ) -> int:
         """停用指定文档的旧片段，返回受影响数量。"""
+        ...
+
+
+class DocumentStoreProvider(Protocol):
+    """文档目录查询和管理接口。"""
+
+    async def get_document_by_id(
+        self,
+        document_id: str,
+    ) -> StoredDocument | None:
+        """根据稳定的文档ID查询文档。"""
+
+        ...
+
+    async def get_document(
+        self,
+        document_key: UUID,
+    ) -> StoredDocument | None:
+        """根据数据库文档主键查询文档。"""
+
+        ...
+
+    async def list_documents(
+        self,
+        *,
+        limit: int,
+        offset: int,
+        include_deleted: bool = False,
+    ) -> DocumentListResult:
+        """分页查询文档目录。"""
+
+        ...
+
+    async def delete_document(
+        self,
+        document_key: UUID,
+    ) -> bool:
+        """软删除文档、活动版本及活动Chunk。"""
+
         ...

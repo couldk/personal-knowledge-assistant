@@ -20,7 +20,9 @@ from personal_knowledge_assistant.domain import (
     ChunkingConfig,
     ChunkMetadata,
     DocumentChunk,
+    DocumentStatus,
     DocumentType,
+    ImportStatus,
     create_chunk_id,
 )
 from personal_knowledge_assistant.indexing import (
@@ -320,3 +322,167 @@ async def test_document_upload_is_indexed_and_searchable_in_pgvector(
     assert results
     assert results[0].chunk.document_id == outcome.document_id
     assert results[0].chunk.metadata.file_name == "day10-vector.txt"
+
+
+@pytest.mark.asyncio
+async def test_pgvector_document_list_detail_and_delete(
+    pg_store: PgVectorStore,
+) -> None:
+    chunk = make_chunk(
+        document_id="file:///integration/day11-management.txt",
+        content_hash="f" * 64,
+        chunk_index=0,
+        text="Vector document management.",
+        file_name="day11-management.txt",
+    )
+    await pg_store.upsert([chunk], [make_vector(0)])
+
+    stored = await pg_store.get_document_by_id(chunk.document_id)
+
+    assert stored is not None
+    assert stored.status is DocumentStatus.READY
+    assert stored.active_content_hash == "f" * 64
+    assert stored.active_chunk_count == 1
+
+    listed = await pg_store.list_documents(limit=20, offset=0)
+
+    assert listed.total == 1
+    assert listed.items == [stored]
+    assert await pg_store.get_document(stored.document_key) == stored
+
+    assert await pg_store.delete_document(stored.document_key) is True
+    assert await pg_store.delete_document(stored.document_key) is False
+
+    deleted = await pg_store.get_document(stored.document_key)
+    assert deleted is not None
+    assert deleted.status is DocumentStatus.DELETED
+    assert deleted.active_content_hash is None
+    assert deleted.active_chunk_count == 0
+
+    active_documents = await pg_store.list_documents(limit=20, offset=0)
+    search_results = await pg_store.search(make_vector(0), limit=5)
+
+    assert active_documents.total == 0
+    assert search_results == []
+
+
+def create_persistent_import_service(
+    *,
+    pg_store: PgVectorStore,
+    upload_directory: Path,
+) -> DocumentImportService:
+    embedding_provider = IntegrationEmbeddingProvider()
+    indexing_service = DocumentIndexingService(
+        chunker=SentenceChunker(
+            ChunkingConfig(
+                chunk_size=64,
+                chunk_overlap=8,
+            )
+        ),
+        embedding_provider=embedding_provider,
+        vector_store=pg_store,
+    )
+
+    return DocumentImportService(
+        ingestion_service=create_default_ingestion_service(),
+        indexing_service=indexing_service,
+        upload_directory=upload_directory,
+        max_upload_bytes=1024,
+        document_store=pg_store,
+    )
+
+
+@pytest.mark.asyncio
+async def test_persistent_import_status_survives_service_restart(
+    pg_store: PgVectorStore,
+    tmp_path: Path,
+) -> None:
+    first_service = create_persistent_import_service(
+        pg_store=pg_store,
+        upload_directory=tmp_path,
+    )
+    first = await first_service.import_upload(
+        file_name="day11-persistence.txt",
+        content=b"Vector persistence first version.",
+    )
+
+    restarted_service = create_persistent_import_service(
+        pg_store=pg_store,
+        upload_directory=tmp_path,
+    )
+    repeated = await restarted_service.import_upload(
+        file_name="day11-persistence.txt",
+        content=b"Vector persistence first version.",
+    )
+
+    second_restart_service = create_persistent_import_service(
+        pg_store=pg_store,
+        upload_directory=tmp_path,
+    )
+    updated = await second_restart_service.import_upload(
+        file_name="day11-persistence.txt",
+        content=b"Memory persistence second version.",
+    )
+
+    assert first.import_status is ImportStatus.CREATED
+    assert repeated.import_status is ImportStatus.UNCHANGED
+    assert repeated.indexing_status is IndexingStatus.SKIPPED
+    assert updated.import_status is ImportStatus.UPDATED
+    assert updated.indexing_status is IndexingStatus.INDEXED
+    assert updated.deactivated_chunk_count > 0
+
+    old_results = await pg_store.search(
+        make_vector(0),
+        limit=5,
+        filters={"content_hash": first.content_hash},
+    )
+    new_results = await pg_store.search(
+        make_vector(1),
+        limit=5,
+        filters={"content_hash": updated.content_hash},
+    )
+
+    assert old_results == []
+    assert new_results
+    assert new_results[0].chunk.document_id == updated.document_id
+
+
+@pytest.mark.asyncio
+async def test_document_management_is_tenant_isolated(
+    pg_store: PgVectorStore,
+) -> None:
+    chunk = make_chunk(
+        document_id="file:///integration/private.txt",
+        content_hash="1" * 64,
+        chunk_index=0,
+        text="Private tenant document.",
+        file_name="private.txt",
+    )
+    await pg_store.upsert([chunk], [make_vector(0)])
+    stored = await pg_store.get_document_by_id(chunk.document_id)
+    assert stored is not None
+
+    settings = Settings()
+    other_store = PgVectorStore(
+        database_url=settings.database_url,
+        schema=settings.database_schema,
+        dimension=DIMENSION,
+        pool_min_size=1,
+        pool_max_size=2,
+        connect_timeout_seconds=10,
+        tenant_id=f"other-{uuid4().hex}",
+    )
+    await other_store.open()
+
+    try:
+        assert await other_store.get_document(stored.document_key) is None
+        assert await other_store.get_document_by_id(chunk.document_id) is None
+        assert (
+            await other_store.list_documents(
+                limit=20,
+                offset=0,
+            )
+        ).total == 0
+        assert await other_store.delete_document(stored.document_key) is False
+    finally:
+        await other_store.close()

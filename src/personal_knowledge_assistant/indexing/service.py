@@ -35,12 +35,14 @@ class DocumentIndexingService:
     async def index(
         self,
         import_result: ImportResult,
+        *,
+        force: bool = False,
     ) -> IndexingResult:
         """切块、生成向量并写入向量库。"""
 
         document = import_result.document
 
-        if import_result.status == ImportStatus.UNCHANGED:
+        if import_result.status == ImportStatus.UNCHANGED and not force:
             return IndexingResult(
                 status=IndexingStatus.SKIPPED,
                 document_id=document.document_id,

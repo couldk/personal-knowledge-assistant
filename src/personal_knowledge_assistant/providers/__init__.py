@@ -1,4 +1,9 @@
-from personal_knowledge_assistant.providers.base import ChatProvider
+from personal_knowledge_assistant.providers.base import (
+    ChatProvider,
+    DocumentStoreProvider,
+    EmbeddingProvider,
+    VectorStoreProvider,
+)
 from personal_knowledge_assistant.providers.deepseek_chat import (
     DeepSeekChatProvider,
 )
@@ -19,9 +24,12 @@ __all__ = [
     "ChatProvider",
     "ChatProviderError",
     "DeepSeekChatProvider",
+    "DocumentStoreProvider",
+    "EmbeddingProvider",
     "EmptyChatMessagesError",
     "EmptyChatResponseError",
     "SiliconFlowEmbeddingProvider",
+    "VectorStoreProvider",
     "create_chat_provider",
     "create_embedding_provider",
 ]
