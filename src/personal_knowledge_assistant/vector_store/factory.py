@@ -1,3 +1,6 @@
+from personal_knowledge_assistant.auth.context import (
+    get_current_tenant_id,
+)
 from personal_knowledge_assistant.config import Settings
 from personal_knowledge_assistant.providers.base import (
     VectorStoreProvider,
@@ -31,8 +34,8 @@ def create_vector_store(
             pool_min_size=(settings.database_pool_min_size),
             pool_max_size=(settings.database_pool_max_size),
             connect_timeout_seconds=(settings.database_connect_timeout_seconds),
-            # Day 12 接入真实认证后替换。
-            tenant_id="local",
+            tenant_id=settings.auth_local_tenant_id,
+            tenant_id_provider=lambda: get_current_tenant_id(settings.auth_local_tenant_id),
         )
 
     raise ValueError(f"Unsupported vector store provider: {settings.vector_store_provider}")

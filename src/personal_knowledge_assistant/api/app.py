@@ -14,6 +14,10 @@ from personal_knowledge_assistant.api.routes import (
 from personal_knowledge_assistant.application import (
     create_application_services,
 )
+from personal_knowledge_assistant.auth import (
+    AuthenticationMiddleware,
+    JwtAuthenticator,
+)
 from personal_knowledge_assistant.config import (
     Settings,
 )
@@ -44,13 +48,15 @@ def create_api_app(
         """创建共享服务并管理数据库连接池。"""
 
         selected_agent_service = agent_service
+
         selected_document_import_service = document_import_service
+
         selected_document_management_service = document_management_service
 
         managed_vector_store: PgVectorStore | None = None
 
-        # 生产环境没有注入Fake Service，
-        # 因此创建完整的真实应用服务。
+        # 没有注入Fake Service时，
+        # 创建完整的生产应用服务。
         if (
             selected_agent_service is None
             and selected_document_import_service is None
@@ -65,14 +71,19 @@ def create_api_app(
                 PgVectorStore,
             ):
                 await services.vector_store.open()
+
                 managed_vector_store = services.vector_store
 
             selected_agent_service = services.agent_service
+
             selected_document_import_service = services.document_import_service
+
             selected_document_management_service = services.document_management_service
 
         api.state.agent_service = selected_agent_service
+
         api.state.document_import_service = selected_document_import_service
+
         api.state.document_management_service = selected_document_management_service
 
         try:
@@ -84,8 +95,16 @@ def create_api_app(
     api = FastAPI(
         title=("Personal Knowledge Assistant API"),
         description=("Evidence-grounded LangGraph personal knowledge assistant."),
-        version="0.1.0",
+        version="0.2.0",
         lifespan=lifespan,
+    )
+
+    # JWT认证中间件必须在应用创建后加入。
+    # 中间件会从Authorization Bearer头读取Token，
+    # 并将tenant_id/user_id写入请求上下文。
+    api.add_middleware(
+        AuthenticationMiddleware,
+        authenticator=JwtAuthenticator(selected_settings),
     )
 
     api.include_router(

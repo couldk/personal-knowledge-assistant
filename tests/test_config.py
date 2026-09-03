@@ -17,6 +17,10 @@ def test_settings_have_safe_defaults(
 
     assert settings.app_env == "local"
     assert settings.retrieval_top_k == 5
+    assert settings.auth_enabled is False
+    assert settings.auth_jwt_secret_key is None
+    assert settings.auth_local_tenant_id == "local"
+    assert settings.auth_local_user_id == "local-user"
 
     assert settings.chat_api_key is None
     assert settings.chat_base_url == ("https://api.deepseek.com")
@@ -139,5 +143,44 @@ def test_upload_max_bytes_rejects_invalid_values(
         Settings.model_validate(
             {
                 "upload_max_bytes": invalid_value,
+            }
+        )
+
+
+def test_authentication_requires_secret_key() -> None:
+    with pytest.raises(
+        ValidationError,
+        match="auth_jwt_secret_key is required",
+    ):
+        Settings.model_validate(
+            {
+                "auth_enabled": True,
+                "auth_jwt_secret_key": None,
+            }
+        )
+
+
+def test_authentication_rejects_short_secret_key() -> None:
+    with pytest.raises(
+        ValidationError,
+        match="at least 32 characters",
+    ):
+        Settings.model_validate(
+            {
+                "auth_enabled": True,
+                "auth_jwt_secret_key": "too-short",
+            }
+        )
+
+
+def test_production_requires_authentication() -> None:
+    with pytest.raises(
+        ValidationError,
+        match="Authentication must be enabled in production",
+    ):
+        Settings.model_validate(
+            {
+                "app_env": "production",
+                "auth_enabled": False,
             }
         )

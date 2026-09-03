@@ -87,5 +87,6 @@ app/
 - [第九天：PostgreSQL + pgvector 向量存储](day9-pgvector-store.md)
 - [第十天：文档上传与自动索引 API](day10-document-import-api.md)
 - [第十一天：持久化文档目录与管理 API](day11-document-management.md)
+- [第十二天：JWT 认证与请求级多租户隔离](day12-jwt-multitenancy.md)
 
 [English documentation](../en/README.md) · [返回项目主页](../../README.md)

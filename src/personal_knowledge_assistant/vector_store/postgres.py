@@ -1,6 +1,6 @@
 from __future__ import annotations
 
-from collections.abc import Sequence
+from collections.abc import Callable, Sequence
 from datetime import datetime
 from math import fsum, isfinite, sqrt
 from typing import Any
@@ -55,6 +55,7 @@ class PgVectorStore:
         pool_max_size: int,
         connect_timeout_seconds: int,
         tenant_id: str = "local",
+        tenant_id_provider: Callable[[], str] | None = None,
     ) -> None:
         if not database_url.strip():
             raise ValueError("Database URL cannot be empty.")
@@ -81,7 +82,8 @@ class PgVectorStore:
 
         self._schema = schema
         self._dimension = dimension
-        self._tenant_id = normalized_tenant_id
+        self._default_tenant_id = normalized_tenant_id
+        self._tenant_id_provider = tenant_id_provider
         self._connect_timeout_seconds = connect_timeout_seconds
 
         self._pool = AsyncConnectionPool[psycopg.AsyncConnection[Any]](
@@ -105,9 +107,19 @@ class PgVectorStore:
 
     @property
     def tenant_id(self) -> str:
-        """返回当前本地租户。"""
+        """返回当前请求租户；没有请求上下文时返回默认租户。"""
 
-        return self._tenant_id
+        tenant_id = (
+            self._tenant_id_provider()
+            if self._tenant_id_provider is not None
+            else self._default_tenant_id
+        )
+        normalized_tenant_id = tenant_id.strip()
+
+        if not normalized_tenant_id:
+            raise VectorStoreError("Tenant ID provider returned an empty tenant ID.")
+
+        return normalized_tenant_id
 
     @staticmethod
     async def _configure_connection(
@@ -322,7 +334,7 @@ class PgVectorStore:
                     document_cursor = await connection.execute(
                         document_query,
                         (
-                            self._tenant_id,
+                            self.tenant_id,
                             chunk.document_id,
                             chunk.metadata.source_path,
                             chunk.metadata.file_name,
@@ -360,7 +372,7 @@ class PgVectorStore:
                     await connection.execute(
                         chunk_query,
                         (
-                            self._tenant_id,
+                            self.tenant_id,
                             document_key,
                             document_version_id,
                             chunk.document_id,
@@ -500,7 +512,7 @@ class PgVectorStore:
 
         parameters: list[Any] = [
             Vector(list(query_vector)),
-            self._tenant_id,
+            self.tenant_id,
         ]
 
         for name, expected in normalized_filters.items():
@@ -672,7 +684,7 @@ class PgVectorStore:
                 chunk_cursor = await connection.execute(
                     chunk_query,
                     (
-                        self._tenant_id,
+                        self.tenant_id,
                         normalized_document_id,
                     ),
                 )
@@ -682,7 +694,7 @@ class PgVectorStore:
                 await connection.execute(
                     version_query,
                     (
-                        self._tenant_id,
+                        self.tenant_id,
                         normalized_document_id,
                     ),
                 )
@@ -768,7 +780,7 @@ class PgVectorStore:
                 cursor = await connection.execute(
                     query,
                     (
-                        self._tenant_id,
+                        self.tenant_id,
                         value,
                     ),
                 )
@@ -862,7 +874,7 @@ class PgVectorStore:
                 list_cursor = await connection.execute(
                     list_query,
                     (
-                        self._tenant_id,
+                        self.tenant_id,
                         limit,
                         offset,
                     ),
@@ -871,7 +883,7 @@ class PgVectorStore:
 
                 count_cursor = await connection.execute(
                     count_query,
-                    (self._tenant_id,),
+                    (self.tenant_id,),
                 )
                 count_row = await count_cursor.fetchone()
         except psycopg.Error as exc:
@@ -934,7 +946,7 @@ class PgVectorStore:
                     document_query,
                     (
                         document_key,
-                        self._tenant_id,
+                        self.tenant_id,
                     ),
                 )
 
@@ -950,7 +962,7 @@ class PgVectorStore:
                     chunk_query,
                     (
                         document_key,
-                        self._tenant_id,
+                        self.tenant_id,
                     ),
                 )
         except psycopg.Error as exc:

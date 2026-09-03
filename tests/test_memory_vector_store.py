@@ -2,6 +2,11 @@ from datetime import UTC, datetime
 
 import pytest
 
+from personal_knowledge_assistant.auth import (
+    AuthenticatedPrincipal,
+    reset_current_principal,
+    set_current_principal,
+)
 from personal_knowledge_assistant.config import Settings
 from personal_knowledge_assistant.domain import (
     ChunkMetadata,
@@ -580,4 +585,18 @@ def test_factory_creates_pgvector_store() -> None:
         PgVectorStore,
     )
     assert store.dimension == 1024
+    assert store.tenant_id == "local"
+
+    token = set_current_principal(
+        AuthenticatedPrincipal(
+            tenant_id="tenant-a",
+            user_id="user-a",
+        )
+    )
+
+    try:
+        assert store.tenant_id == "tenant-a"
+    finally:
+        reset_current_principal(token)
+
     assert store.tenant_id == "local"
